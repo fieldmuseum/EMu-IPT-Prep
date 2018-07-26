@@ -5,7 +5,7 @@
 
 # STEP 1a: Retrieve dataset in EMu/ecatalogue 
 #          (e.g., for Fishes, find all Fishes catalogue records where Publish=OK & HasMM=Y)
-# STEP 1b: Report those records using "IPT MM test group2" report with these fields:
+# STEP 1b: Report those records using "IPT Audubon Core" report with these fields:
 # 
 #  [1] "Group1_key"                "ecatalogue_key"            "CATirn" (ecatalogue)              
 #  [4] "DarGlobalUniqueIdentifier" "AdmGUIDValue_tab"          "MulMimeType"              
@@ -45,7 +45,7 @@ MMcreator$keyseq <- sequence(rle(as.character(MMcreator$Group1_key))$lengths)
 MM2 <- MMcreator[,2:NCOL(MMcreator)]
 MM3 <- spread(MM2, keyseq, CRE_SummaryData, sep="_", convert=T)
 # Need to manually check next line & fix # of united keyseq columns (if <> 3)
-MM4 <- unite(MM3, CRE_Summary, keyseq_1:keyseq_3, sep=" | ", remove = T)
+MM4 <- unite(MM3, CRE_Summary, keyseq_1:keyseq_1, sep=" | ", remove = T)
 MM4$CRE_Summary <- gsub(" \\| NA", "", MM4$CRE_Summary)
 
 
@@ -65,7 +65,7 @@ SecDepar$keyseq <- sequence(rle(as.character(SecDepar$Group1_key))$lengths)
 SecDepar2 <- SecDepar[,2:NCOL(SecDepar)]
 SecDepar3 <- spread(SecDepar2, keyseq, SecDepartment, sep="_", convert=T)
 # Need to manually check next line & fix # of united keyseq columns (if <> 3)
-SecDepar4 <- unite(SecDepar3, SecDepartment, keyseq_1:keyseq_2, sep=" | ", remove = T)
+SecDepar4 <- unite(SecDepar3, SecDepartment, keyseq_1:keyseq_4, sep=" | ", remove = T)
 SecDepar4$SecDepartment <- gsub("\\| NA|(\\s+\\|\\s+\\|)+|^\\s+|\\s+$", "", SecDepar4$SecDepartment)
 SecDepar4$SecDepartment <- gsub("^\\s+|(^\\s+\\|\\s+)|\\s+$", "", SecDepar4$SecDepartment)
 
@@ -171,6 +171,6 @@ ColLabels2 <- gsub("\\.", ":", ColLabels)
 
 # EXPORT
 IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
-write.table(IPTout3, file="field_media_bryophyte.csv", row.names = F, sep=",", na="", col.names = F)
+write.table(IPTout3, file="field_media_bird_egg.csv", row.names = F, sep=",", na="", col.names = F)
 # write.table(IPTout3, file="field_media_fishes.csv", row.names = F, sep=",", na="", col.names = F)
 # # write.csv(IPTout2, file="IPTout.csv", row.names = F, na="")
