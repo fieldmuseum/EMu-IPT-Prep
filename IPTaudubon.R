@@ -45,7 +45,13 @@ MMcreator$keyseq <- sequence(rle(as.character(MMcreator$Group1_key))$lengths)
 MM2 <- MMcreator[,2:NCOL(MMcreator)]
 MM3 <- spread(MM2, keyseq, CRE_SummaryData, sep="_", convert=T)
 # Need to manually check next line & fix # of united keyseq columns (if <> 3)
-MM4 <- unite(MM3, CRE_Summary, keyseq_1:keyseq_1, sep=" | ", remove = T)
+if (ncol(MM3) > 2) {
+  MM3cols <- colnames(MM3)[2:ncol(MM3)]
+  MM4 <- unite(MM3, "CRE_Summary", MM3cols, sep=" | ", remove = T)
+} else {
+  colnames(MM3)[2] <- "CRE_Summary"
+  MM4 <- MM3
+}
 MM4$CRE_Summary <- gsub(" \\| NA", "", MM4$CRE_Summary)
 
 
@@ -59,13 +65,20 @@ colnames(RIG3)[2] <- "RIGOWN_Summary"
 
 
 # Filter SecDepar to only show Collection Codes
-CollDepar <- c("Zoology", "Geology")
+CollDepar <- c("Zoology", "Geology", "Botany")
 SecDepar <- SecDepar[which(!SecDepar$SecDepartment %in% CollDepar),]
 SecDepar$keyseq <- sequence(rle(as.character(SecDepar$Group1_key))$lengths)
 SecDepar2 <- SecDepar[,2:NCOL(SecDepar)]
 SecDepar3 <- spread(SecDepar2, keyseq, SecDepartment, sep="_", convert=T)
 # Need to manually check next line & fix # of united keyseq columns (if <> 3)
-SecDepar4 <- unite(SecDepar3, SecDepartment, keyseq_1:keyseq_4, sep=" | ", remove = T)
+if (ncol(SecDepar3) > 2) {
+  SecCols <- colnames(SecDepar3)[2:ncol(SecDepar3)]
+  SecDepar4 <- unite(SecDepar3, "SecDepartment", SecCols, sep=" | ", remove = T)
+  # SecDepar4 <- unite(SecDepar3, SecDepartment, keyseq_1:keyseq_3, sep=" | ", remove = T)
+} else {
+  colnames(SecDepar3)[2] <- "SecDepartment"
+  SecDepar4 <- SecDepar3
+}
 SecDepar4$SecDepartment <- gsub("\\| NA|(\\s+\\|\\s+\\|)+|^\\s+|\\s+$", "", SecDepar4$SecDepartment)
 SecDepar4$SecDepartment <- gsub("^\\s+|(^\\s+\\|\\s+)|\\s+$", "", SecDepar4$SecDepartment)
 
@@ -171,6 +184,5 @@ ColLabels2 <- gsub("\\.", ":", ColLabels)
 
 # EXPORT
 IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
-write.table(IPTout3, file="field_media_bird_egg.csv", row.names = F, sep=",", na="", col.names = F)
-# write.table(IPTout3, file="field_media_fishes.csv", row.names = F, sep=",", na="", col.names = F)
-# # write.csv(IPTout2, file="IPTout.csv", row.names = F, na="")
+IPTout4 <- unique(IPTout3)
+write.table(IPTout4, file="data02output/field_media_seed.csv", row.names = F, sep=",", na="", col.names = F)
