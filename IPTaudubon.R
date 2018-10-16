@@ -1,7 +1,7 @@
 # EMu Data Prep Script -- to prep Audubon Core dataset
 
 # [Stuff to update/fix in script:]
-# [Need to manually check lines 48 & 68 & fix # of united keyseq columns (if <> 3)]
+# [May need to manually check lines 48 & 68 & fix # of united keyseq columns (if <> 3)]
 
 # STEP 1a: Retrieve dataset in EMu/ecatalogue 
 #          (e.g., for Fishes, find all Fishes catalogue records where Publish=OK & HasMM=Y)
@@ -20,6 +20,8 @@
 
 
 # STEP 2: Run script:
+
+dept <- readline("Enter the collection you're prepping (e.g., 'bird_egg' or 'bird'): ")
 
 # install.packages("tidyr")  # uncomment if not already installed
 library("tidyr")
@@ -185,4 +187,6 @@ ColLabels2 <- gsub("\\.", ":", ColLabels)
 # EXPORT
 IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
 IPTout4 <- unique(IPTout3)
-write.table(IPTout4, file="data02output/field_media_seed.csv", row.names = F, sep=",", na="", col.names = F)
+write.table(IPTout4, 
+            file=paste0("data02output/field_media_", dept,".csv"),
+            row.names = F, sep=",", na="", col.names = F)
