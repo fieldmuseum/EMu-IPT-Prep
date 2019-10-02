@@ -116,6 +116,9 @@ IPTout$accessURI <- ifelse(IPTout$AdmPublishWebNoPassword=="No",paste0(""),ifels
                              paste0("https://fm-digital-assets.fieldmuseum.org/0/",rep(0,3-nchar(IPTout$irn)),IPTout$irn))))
 
 
+IPTout$accessURI[IPTout$DetResourceType == "URL"] <- IPTout$MulIdentifier[IPTout$DetResourceType == "URL"]
+
+
 IPTout$accessURI[IPTout$DetResourceType == "Image | CT Data"] <- paste0("https://mm.fieldmuseum.org/",
                                                                         substr(IPTout$AdmGUIDValue_tab[IPTout$DetResourceType == "Image | CT Data"], 1, 36))
 
