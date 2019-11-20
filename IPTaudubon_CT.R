@@ -217,10 +217,19 @@ write.table(IPTout4,
             file=paste0("data02output/field_media_", dept,".csv"),
             row.names = F, sep=",", na="", col.names = F)
 
-if(NROW(GUIDcheck) > 0) {
+if(exists("GUIDcheck")) {
+  
+  print(paste0("GUID errors -- see 'guid_check_", dept, ".csv'"))
+  
   write.table(GUIDcheck,
               file = paste0("data02output/guid_check_", dept, ".csv"),
               row.names = F, sep=",", na="", col.names = T)  
+  
+} else {
+
+  print("GUIDs all OK")
+    
 }
+
 
 print(Sys.time())
