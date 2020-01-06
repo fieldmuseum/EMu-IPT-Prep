@@ -122,6 +122,27 @@ IPTout$accessURI[IPTout$DetResourceType == "URL"] <- IPTout$MulIdentifier[IPTout
 IPTout$accessURI[IPTout$DetResourceType == "Image | CT Data"] <- paste0("https://mm.fieldmuseum.org/",
                                                                         substr(IPTout$AdmGUIDValue_tab[IPTout$DetResourceType == "Image | CT Data"], 1, 36))
 
+# add ac:variant
+IPTout$variantLiteral <- "mediumQualityFurtherInformationURL"
+
+# add ac:Service Access Point
+IPTout$hasServiceAccessPoint <- paste0("https://mm.fieldmuseum.org/",
+                                       substr(IPTout$AdmGUIDValue_tab,
+                                              1, 36))
+
+# add separate rows for separate CT hasServiceAccessPoints
+# # [at least until GBIF can render multiple service access points]
+if (NROW(IPTout[IPTout$DetResourceType=="Image | CT Data",]) > 0) {
+  
+  CTrows <- IPTout[IPTout$DetResourceType=="Image | CT Data",]
+  CTrows$variantLiteral <- "goodQualityFurtherInformationURL"
+  CTrows$hasServiceAccessPoint <- paste0("https://n2t.net/",
+                                         gsub(".*\\|\\s+", "", CTrows$AdmGUIDValue_tab))
+  
+  IPTout <- rbind(IPTout, CTrows)
+
+}
+
 # may also need to gsub("\n", " \\| ", [all COLs, or at least table->text cols?])
 IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)] <- gsub("\n", " | ", IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)])
 IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)] <- gsub("\n", " | ", IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)])
@@ -191,7 +212,7 @@ ColLabels <- gsub("^DetResourceType.B$", "subtypeLiteral", ColLabels)
 ColLabels <- gsub("^DetResourceType.A$", "dc.type", ColLabels)
 ColLabels <- gsub("^MulTitle$", "dcterms.title", ColLabels)
 ColLabels <- gsub("^irn$", "providerManagedID", ColLabels)
-ColLabels <- gsub("^AdmPublishWebNoPassword$", "hasServiceAccessPoint", ColLabels)
+# ColLabels <- gsub("^AdmPublishWebNoPassword$", "hasServiceAccessPoint", ColLabels)
 ColLabels <- gsub("^RIG_SummaryData$", "dc.rights", ColLabels)
 ColLabels <- gsub("^RIGOWN_Summary$", "Owner", ColLabels)
 ColLabels <- gsub("^CRE_Summary$", "dc.creator", ColLabels)
