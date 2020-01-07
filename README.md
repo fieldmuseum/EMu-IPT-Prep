@@ -13,5 +13,5 @@ These scripts are part of the FMNH workflow for publishing specimen data from EM
 ## - IPTdwc.R
   - includes checks to help prepare EMu Catalogue data as a [Darwin Core](https://github.com/tdwg/dwc/blob/master/docs/terms/index.md) dataset.
 
-## - IPTrelationPreDev.R
+## - IPTrr_PreDev.R
   - prepares EMu Catalogue data (pre-EMu-development) as a [Resource Relationship](https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship) extension for occurrences with interactions.
