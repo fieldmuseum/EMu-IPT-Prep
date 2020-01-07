@@ -27,6 +27,7 @@ relat <- data.frame("resourceID" = relat_raw$DarGlobalUniqueIdentifier,
                     "relationshipRemarks" = relat_raw$RelNotes,
                     stringsAsFactors = FALSE)
 
+
 #  Parse RelNotes
 #
 #   RelNotes values from EMu need to be formatted like this:
@@ -42,6 +43,7 @@ relat <- separate(relat, col = "relationshipRemarks",
 relat <- as.data.frame(sapply(relat, trimws, simplify = FALSE),
                        stringsAsFactors = F)
 
+
 # Cleanup parsed values
 relat$Count <- gsub("Count:\\s*", "", relat$Count)
 relat$relatedResourceID_2 <- gsub("ObjURI:\\s*", "", relat$relatedResourceID_2)
@@ -54,6 +56,7 @@ relat <- as.data.frame(sapply(relat, gsub, pattern = "NULL", replacement = "",
                               simplify = FALSE),
                        stringsAsFactors = FALSE)
 
+
 # Merge fields mapped to multiple pre-dev fields
 relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResourceID_2[is.na(relat$relatedResourceID)==T]
 
@@ -62,11 +65,13 @@ relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResou
 relat$resourceRelationshipID <- ""
 relat$relationshipEstablishedDate <- ""
 
-# prep final export table
+
+# Prep final export table
 relat_out <- relat[,c("resourceRelationshipID", "resourceID", "relatedResourceID",
                       "relationshipOfResource", "relationshipAccordingTo",
                       "relationshipEstablishedDate", "relationshipRemarks",
                       "scientificName")]
+
 
 # output resource relationship extension
 
@@ -74,9 +79,10 @@ if(!dir.exists("data02output/relation")) {
   dir.create("data02output/relation")  
 }
 
-
 write.csv(relat_out, 
-          file = "data02output/relation/relation.csv",
+          file = paste0("data02output/relation/relation_",
+                        gsub("-|\\s+|:", "", Sys.time()),
+                        ".csv"),
           quote = TRUE,
           na = "")
 
