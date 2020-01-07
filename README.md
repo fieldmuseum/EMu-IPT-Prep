@@ -2,6 +2,7 @@
 Tools to prep EMu data for IPT
 
 These scripts are part of the FMNH workflow for publishing specimen data from EMu to the [Field Museum IPT](https://fmipt.fieldmuseum.org).
+Information on how to structure data/reports from EMu is at the top of each script.
 
 ## - IPTac.R
   - prepares EMu Catalogue and Multimedia data as an [Audubon Core](https://github.com/tdwg/ac/blob/master/docs/termlist.md) extension for multimedia associated with occurrences.
@@ -15,3 +16,4 @@ These scripts are part of the FMNH workflow for publishing specimen data from EM
 
 ## - IPTrr_PreDev.R
   - prepares EMu Catalogue data (pre-EMu-development) as a [Resource Relationship](https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship) extension for occurrences with interactions.
+
