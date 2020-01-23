@@ -6,6 +6,5 @@
 /data01raw
 /data02output
 
-*.csv
 *.zip
 *.Rproj
