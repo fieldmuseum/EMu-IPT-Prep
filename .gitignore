@@ -5,6 +5,7 @@
 
 /data01raw
 /data02output
+*/rsconnect/*
 
 *.zip
 *.Rproj

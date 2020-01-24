@@ -4,14 +4,17 @@
 # 2. Report with "IPT Related Resource"
 #      Generated CSVs include:
 #         - ecatalog.csv
-#         - Eco.csv
-#         - Rel.csv
+#         - Group1.csv
+#
 # 3. Save report to [this repo]/data01raw/relationships
 
 library(readr)
 library(tidyr)
 
 relat_raw <- read_csv("data01raw/relationships/Group1.csv")
+
+# # test with sample data
+relat_raw <- read_csv("sampleData/relationships/Group1.csv")
 
 # Group.DarGlobalUniqueID                     = resourceID  (= occurrenceID)
 # Group.relatedResourceID                     = relatedResourceID
@@ -90,9 +93,31 @@ relat_out <- relat[,c("resourceRelationshipID", "resourceID", "relatedResourceID
 
 # output resource relationship extension
 
+
 if(!dir.exists("data02output/relation")) {
-  dir.create("data02output/relation")  
+  
+  if(!dir.exists("data02output")) {
+    
+    dir.create("data02output")
+    print("created 'output' directory")
+    
+    } else {
+      
+      print("output directory exists")
+      
+      }
+  
+  dir.create("data02output/relation") 
+  print("created 'relation' output subdirectory")
+
+} else {
+
+  print("relation output directory exists")
+
 }
+
+
+
 
 write.csv(relat_out, 
           file = paste0("data02output/relation/relation_",
