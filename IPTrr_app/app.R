@@ -72,6 +72,7 @@ ui <- fluidPage(
     mainPanel(
       
       # Output: Data file ----
+      textOutput("data_check"),
       textOutput("done")
       
     )
@@ -96,6 +97,18 @@ server <- function(input, output) {
       
       relat_raw <- read_csv(originalData$datapath)
       
+      # output$data_check <- renderText({
+      #   ifelse(!grepl("DarGlobalUniqueIdentifier|relatedResourceID|RelRelationship|DarScientificName|RelNotes",
+      #          colnames(relat_raw)),
+      #          paste("Make sure input is a CSV that includes these columns:",
+      #                 "DarGlobalUniqueIdentifier",
+      #                 "relatedResourceID",
+      #                 "RelRelationship",
+      #                 "DarScientificName",
+      #                 "RelNotes"),
+      #          "Input CSV columns look ok")
+      # })
+    
       # Data Prep
       relat <- data.frame("resourceID" = relat_raw$DarGlobalUniqueIdentifier,
                           "relatedResourceID" = relat_raw$relatedResourceID,
@@ -148,12 +161,13 @@ server <- function(input, output) {
                 row.names = FALSE,
                 quote = TRUE,
                 na = "")
-      
+
+            
       output$done <- renderText({
         ifelse(!is.null(relat_out),
-               "Transformation done!",
-               "Error while processing data - check input CSV")
-        
+               "Transformation done - check output.",
+               "Error while processing data - check input CSV.")
+      
       })
       
     }
