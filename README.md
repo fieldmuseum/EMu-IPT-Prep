@@ -16,4 +16,5 @@ Information on how to structure data/reports from EMu is at the top of each scri
 
 ## IPTrr_PreDev.R
   - prepares EMu Catalogue data (pre-EMu-development) as a [Resource Relationship](https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship) extension for occurrences with interactions.
-  - see the [Relationship Data workflows doc](https://docs.google.com/document/d/1zvmyEmAilPAmcY1MF-m1I9ZVlDqL6ah170nUez-kR4k/edit#heading=h.tc44y8ytraq5) for help with EMu data handling and IPT mapping.
+    - see the [Relationship Data workflows doc](https://docs.google.com/document/d/1zvmyEmAilPAmcY1MF-m1I9ZVlDqL6ah170nUez-kR4k/edit#heading=h.tc44y8ytraq5) for help with EMu data handling and IPT mapping.
+  - try [an online version here](https://kate-webbink.shinyapps.io/IPTrr_app/)
