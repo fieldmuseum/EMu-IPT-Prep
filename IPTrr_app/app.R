@@ -1,21 +1,5 @@
 # Prep Related Resource extension datasets
-#
-# Input-CSV for this app can be made in 3 steps:
-#
-# 1. Retrieve EMu Catalog records with related resources
-#
-# 2. Report with "IPT Related Resource"
-#      Generated Group1.csv should include these fields:
-#         - irn
-#         - DarGlobalUniqueID
-#         - RelRelationship_tab
-#         - RelNotes
-#         - RelObjectsRef_tab.DarGlobalUniqueIdentifier
-#             - in report, relabel this "relatedResourceID"
-#         - RelObjectsRef_tab.DarScientificName
-#
-# 3. Save report to [this repo]/data01raw/relationships
-#
+
 
 library(readr)
 library(tidyr)
@@ -30,23 +14,23 @@ ui <- fluidPage(
   
   # App title ----
   titlePanel("Related Resource data prep"),
-  # App subtitle
-  h4(HTML("Upload your CSV and click the Download button")),
-  
-  br(),
-  p(a(href = "https://docs.google.com/document/d/190msXiIYgui4zReB4O8-IQXq4Gue0GqQZU3wMCZG_jo/edit#heading=h.tc44y8ytraq5",
-      "Follow these instructions"),
-      "to set up an input-CSV for this app."),
-  p(a(href = "https://github.com/fieldmuseum/EMu-IPT-Prep/blob/master/sampleData/relationships/Group1.csv",
-      "See this"),
-    "for an example of an input-CSV."),
-  br(),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
     
+    
     # Sidebar panel ----
     sidebarPanel(
+      
+      # Instructions
+      h4(HTML("Upload your CSV & click Download button")),
+      p(a(href = "https://docs.google.com/document/d/190msXiIYgui4zReB4O8-IQXq4Gue0GqQZU3wMCZG_jo/edit#heading=h.tc44y8ytraq5",
+          "Follow these instructions"),
+        "to set up an input-CSV for this app."),
+      p(a(href = "https://github.com/fieldmuseum/EMu-IPT-Prep/blob/master/sampleData/relationships/Group1.csv",
+          "See this"),
+        "for an example of an input-CSV."),
+      br(),
       
       # Input: Select a file ----
       fileInput("fileUploaded", "Choose CSV File",
@@ -63,21 +47,28 @@ ui <- fluidPage(
       
       br(),
       br(),
+      
       p("The output CSV is formatted for the",
         a(href = "https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship",
           "Resource Relationship extension"))
     ),
     
+    
     # Main panel for displaying outputs ----
     mainPanel(
       
       # Output: Data file ----
-      textOutput("data_check"),
-      textOutput("done")
+      p(htmlOutput("column_check")),
+      br(),
+      h4(htmlOutput("done")),
+      br(),
+      p(tableOutput("preview"))
       
     )
   )
 )
+
+
 # Define server logic to read selected file ----
 server <- function(input, output) {
   
@@ -97,18 +88,36 @@ server <- function(input, output) {
       
       relat_raw <- read_csv(originalData$datapath)
       
-      # output$data_check <- renderText({
-      #   ifelse(!grepl("DarGlobalUniqueIdentifier|relatedResourceID|RelRelationship|DarScientificName|RelNotes",
-      #          colnames(relat_raw)),
-      #          paste("Make sure input is a CSV that includes these columns:",
-      #                 "DarGlobalUniqueIdentifier",
-      #                 "relatedResourceID",
-      #                 "RelRelationship",
-      #                 "DarScientificName",
-      #                 "RelNotes"),
-      #          "Input CSV columns look ok")
-      # })
-    
+      output$column_check <- renderText({
+        
+        required <- c("DarGlobalUniqueIdentifier",
+                      "relatedResourceID",
+                      "RelRelationship",
+                      "DarScientificName",
+                      "RelNotes")
+        
+        col_check <- data.frame("check" = rep("", NROW(required)),
+                                stringsAsFactors = F)
+        
+        for (i in 1:NROW(required)) {
+          
+          col_check$check[i] <- 
+            ifelse(required[i] %in% colnames(relat_raw),
+                   paste("<ul><strong>",
+                         required[i],
+                         "</strong><span style=\"color:green\">",
+                         "- column found in input - ok </span></ul>"),
+                   paste("<ul><span style=\"color:red\"> Warning: <strong>",
+                         required[i],
+                         "</strong> - column missing from input. </span></ul>"))
+          
+        }
+        
+        col_check$check
+        
+      })
+      
+
       # Data Prep
       relat <- data.frame("resourceID" = relat_raw$DarGlobalUniqueIdentifier,
                           "relatedResourceID" = relat_raw$relatedResourceID,
@@ -162,11 +171,15 @@ server <- function(input, output) {
                 quote = TRUE,
                 na = "")
 
+      output$preview <- renderTable({
+        relat_out[1:5,]
+      })
             
       output$done <- renderText({
-        ifelse(!is.null(relat_out),
-               "Transformation done - check output.",
-               "Error while processing data - check input CSV.")
+        ifelse( # !is.null(relat_out),
+               NROW(relat_out) > 0,
+               "Transformation done. Stay paranoid and check the output. (Preview below)",
+               "<span style=\"color:red\"> Error while processing data - check input CSV.</span>")
       
       })
       
