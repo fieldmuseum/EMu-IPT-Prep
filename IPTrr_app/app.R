@@ -23,7 +23,7 @@ ui <- fluidPage(
     sidebarPanel(
       
       # Instructions
-      h4(HTML("Upload your CSV & click Download button")),
+      h4(HTML("Upload your CSV and click the Download button")),
       p(a(href = "https://docs.google.com/document/d/190msXiIYgui4zReB4O8-IQXq4Gue0GqQZU3wMCZG_jo/edit#heading=h.tc44y8ytraq5",
           "Follow these instructions"),
         "to set up an input-CSV for this app."),
@@ -148,7 +148,13 @@ server <- function(input, output) {
       relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResourceID_2[is.na(relat$relatedResourceID)==T]
       relat$scientificName[is.na(relat$scientificName)==T] <- relat$scientificName_2[is.na(relat$scientificName)==T]
 
+      
+      # Add scientificName to relationshipRemarks until IPT can map sciName
+      relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relationshipRemarks[is.na(relat$scientificName)==F],
+                                                                          " | scientificName: ",
+                                                                          relat$scientificName[is.na(relat$scientificName)==F])
 
+      
       # Add placeholders for missing fields
       relat$resourceRelationshipID <- rep("", NROW(relat))
       relat$relationshipEstablishedDate <- rep("", NROW(relat))

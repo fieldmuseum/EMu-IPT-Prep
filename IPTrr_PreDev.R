@@ -14,7 +14,7 @@ library(tidyr)
 relat_raw <- read_csv("data01raw/relationships/Group1.csv")
 
 # # test with sample data
-relat_raw <- read_csv("sampleData/relationships/Group1.csv")
+# relat_raw <- read_csv("sampleData/relationships/Group1.csv")
 
 # Group.DarGlobalUniqueID                     = resourceID  (= occurrenceID)
 # Group.relatedResourceID                     = relatedResourceID
@@ -78,6 +78,10 @@ relat <- as.data.frame(sapply(relat, gsub, pattern = "NULL", replacement = "",
 relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResourceID_2[is.na(relat$relatedResourceID)==T]
 relat$scientificName[is.na(relat$scientificName)==T] <- relat$scientificName_2[is.na(relat$scientificName)==T]
 
+# Add scientificName to relationshipRemarks until IPT can map sciName
+relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relationshipRemarks[is.na(relat$scientificName)==F],
+                                                                    " | scientificName: ",
+                                                                    relat$scientificName[is.na(relat$scientificName)==F])
 
 # Add placeholders for missing fields
 relat$resourceRelationshipID <- ""
@@ -115,8 +119,6 @@ if(!dir.exists("data02output/relation")) {
   print("relation output directory exists")
 
 }
-
-
 
 
 write.csv(relat_out, 
