@@ -1,13 +1,12 @@
 # Prep Related Resource extension datasets
+# (c) Field Museum of Natural History - Licensed under the MIT license.
+# 3-Feb-2020
 
 
 library(readr)
 library(tidyr)
-
 library(shiny)
 
-# Based on https://stackoverflow.com/a/52952668/4963125
-#   from Carlos Vecina Tebar
 
 # Define UI for data upload app ----
 ui <- fluidPage(
@@ -50,7 +49,11 @@ ui <- fluidPage(
       
       p("The output CSV is formatted for the",
         a(href = "https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship",
-          "Resource Relationship extension"))
+          "Resource Relationship extension.")),
+      
+      p("Code for this app is",
+        a(href = "https://github.com/fieldmuseum/EMu-IPT-Prep/blob/master/IPTrr_app/app.R",
+          "here."))
     ),
     
     
@@ -192,7 +195,6 @@ server <- function(input, output) {
     }
     
   )
-  
   
 }
 
