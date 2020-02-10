@@ -38,6 +38,10 @@ RIGowner <- read.csv(file="data01raw/RigOwner.csv", stringsAsFactors = F, fileEn
 SecDepar <- read.csv(file="data01raw/SecDepar.csv", stringsAsFactors = F, fileEncoding = "utf8")
 
 
+# clean linebreaks out of breakable fields:
+CatMMGroup1$RigAcknowledgement <- gsub("\\n+", "  ", CatMMGroup1$RigAcknowledgement)
+
+
 # Concatenate multiple creators into a single field
 MMcreator$keyseq <- sequence(rle(as.character(MMcreator$Group1_key))$lengths)
 # select only the irn, table-field, & irnseq fields
