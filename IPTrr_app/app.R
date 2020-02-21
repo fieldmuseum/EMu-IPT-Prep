@@ -75,6 +75,7 @@ ui <- fluidPage(
 # Define server logic to read selected file ----
 server <- function(input, output) {
   
+  options(shiny.maxRequestSize=15*1024^2)
   
   # Download handler in Server
   output$downloadFile <- downloadHandler(
