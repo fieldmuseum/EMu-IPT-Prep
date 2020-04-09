@@ -40,6 +40,7 @@ SecDepar <- read.csv(file="data01raw/SecDepar.csv", stringsAsFactors = F, fileEn
 
 # clean linebreaks out of breakable fields:
 CatMMGroup1$RigAcknowledgement <- gsub("\\n+", "  ", CatMMGroup1$RigAcknowledgement)
+CatMMGroup1$MulDescription <- gsub("\\n+", " | ", CatMMGroup1$MulDescription)
 
 
 # Concatenate multiple creators into a single field
