@@ -160,7 +160,7 @@ IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)
 # IPTout2 <- IPTout[which(!IPTout$irn %in% GUIDcheck$irn),]
 
 # DROP AdmPublishWebNoPassword=="No" records?
-IPTout2 <- IPTout[which(IPTout$AdmPublishWebNoPassword=="Yes"),]
+IPTout2 <- IPTout[which(tolower(IPTout$AdmPublishWebNoPassword)=="yes"),]
 IPTout2 <- IPTout2[,-c(1,2,3)]
 IPTout2$metadataLanguageLiteral <- "eng"
 
