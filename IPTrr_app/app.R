@@ -90,7 +90,10 @@ server <- function(input, output) {
       
       originalData <- input$fileUploaded
       
-      relat_raw <- read_csv(originalData$datapath)
+      relat_raw <- read_csv(originalData$datapath,
+                            col_types = cols(.default = col_character()))
+      
+      relat_raw <- type_convert(relat_raw)
       
       output$column_check <- renderText({
         

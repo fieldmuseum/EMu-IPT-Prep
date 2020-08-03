@@ -1,6 +1,7 @@
 # Prep Related Resource extension datasets
 
 # 1. Retrieve Catalog records with related resources
+#       - i.e. where RelRelationship_tab is NOT NULL
 # 2. Report with "IPT Related Resource"
 #      Generated CSVs include:
 #         - ecatalog.csv
@@ -11,7 +12,10 @@
 library(readr)
 library(tidyr)
 
-relat_raw <- read_csv("data01raw/relationships/Group1.csv")
+relat_raw <- read_csv("data01raw/relationships/Group1.csv",
+                      col_types = cols(.default = col_character()))
+
+relat_raw <- type_convert(relat_raw)
 
 # # test with sample data
 # relat_raw <- read_csv("sampleData/relationships/Group1.csv")
