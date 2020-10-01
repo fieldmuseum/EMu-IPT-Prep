@@ -72,7 +72,6 @@ relat <- as.data.frame(sapply(relat, trimws, simplify = FALSE),
                        stringsAsFactors = F)
 
 
-
 relat <- as.data.frame(sapply(relat, gsub, pattern = "NULL", replacement = "",
                               simplify = FALSE),
                        stringsAsFactors = FALSE)
@@ -82,10 +81,15 @@ relat <- as.data.frame(sapply(relat, gsub, pattern = "NULL", replacement = "",
 relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResourceID_2[is.na(relat$relatedResourceID)==T]
 relat$scientificName[is.na(relat$scientificName)==T] <- relat$scientificName_2[is.na(relat$scientificName)==T]
 
+
 # Add scientificName to relationshipRemarks until IPT can map sciName
 relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relationshipRemarks[is.na(relat$scientificName)==F],
                                                                     " | scientificName: ",
                                                                     relat$scientificName[is.na(relat$scientificName)==F])
+
+# cleanup NA values
+relat[is.na(relat)] <- ""
+relat$relationshipRemarks <- gsub("^NA\\s+\\|\\s+", "", relat$relationshipRemarks)
 
 # Add placeholders for missing fields
 relat$resourceRelationshipID <- ""
