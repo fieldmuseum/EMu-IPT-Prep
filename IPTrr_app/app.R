@@ -161,6 +161,9 @@ server <- function(input, output) {
                                                                           " | scientificName: ",
                                                                           relat$scientificName[is.na(relat$scientificName)==F])
 
+      # cleanup NA values
+      relat[is.na(relat)] <- ""
+      relat$relationshipRemarks <- gsub("^NA\\s+\\|\\s+", "", relat$relationshipRemarks)
       
       # Add placeholders for missing fields
       relat$resourceRelationshipID <- rep("", NROW(relat))
