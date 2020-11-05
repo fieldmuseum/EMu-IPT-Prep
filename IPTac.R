@@ -41,7 +41,7 @@ SecDepar <- read.csv(file="data01raw/SecDepar.csv", stringsAsFactors = F, fileEn
 # clean linebreaks out of breakable fields:
 CatMMGroup1$RigAcknowledgement <- gsub("\\n+", "  ", CatMMGroup1$RigAcknowledgement)
 CatMMGroup1$MulDescription <- gsub("\\n+", " | ", CatMMGroup1$MulDescription)
-
+CatMMGroup1$SupMD5Checksum_tab <- gsub("\\n+", " | ", CatMMGroup1$SupMD5Checksum_tab)
 
 # Concatenate multiple creators into a single field
 MMcreator$keyseq <- sequence(rle(as.character(MMcreator$Group1_key))$lengths)
