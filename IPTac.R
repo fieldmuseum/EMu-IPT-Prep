@@ -10,7 +10,7 @@
 #  [1] "Group1_key"                "ecatalogue_key"            "CATirn" (ecatalogue)              
 #  [4] "DarGlobalUniqueIdentifier" "AdmGUIDValue_tab"          "MulMimeType"              
 #  [7] "DetResourceType"           "MulTitle"                  "irn" (emultimedia)                    
-# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"           "RigAcknowledgement"       
+# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"           "RightsAcknowledgeLocal"       
 # [13] "PUB_SummaryData"           "MulDescription"            "DetSubject_tab"           
 # [16] "DetResourceDetailsDate0"   "MulMimeFormat"             "ChaMd5Sum"                
 # [19] "ChaImageWidth"             "ChaImageHeight"            "AdmDateModified"          
@@ -39,7 +39,7 @@ SecDepar <- read.csv(file="data01raw/SecDepar.csv", stringsAsFactors = F, fileEn
 
 
 # clean linebreaks out of breakable fields:
-CatMMGroup1$RigAcknowledgement <- gsub("\\n+", "  ", CatMMGroup1$RigAcknowledgement)
+CatMMGroup1$RightsAcknowledgeLocal <- gsub("\\n+", "  ", CatMMGroup1$RightsAcknowledgeLocal)
 CatMMGroup1$MulDescription <- gsub("\\n+", " | ", CatMMGroup1$MulDescription)
 CatMMGroup1$SupMD5Checksum_tab <- gsub("\\n+", " | ", CatMMGroup1$SupMD5Checksum_tab)
 
@@ -167,7 +167,7 @@ IPTout2$metadataLanguageLiteral <- "eng"
 
 # Rights & Credit
 IPTout2$WebStatement <- "https://www.fieldmuseum.org/field-museum-natural-history-conditions-and-suggested-norms-use-collections"
-IPTout2$RigAcknowledgement[which(is.na(IPTout2$RigAcknowledgement)==TRUE)] <- "https://www.fieldmuseum.org/preferred-citations-collections-data-and-images"
+IPTout2$RightsAcknowledgeLocal[which(is.na(IPTout2$RightsAcknowledgeLocal)==TRUE)] <- "https://www.fieldmuseum.org/preferred-citations-collections-data-and-images"
 
 
 # Add IDofContainingCollection
@@ -230,7 +230,7 @@ ColLabels <- gsub("^ChaMd5Sum$", "hashValue", ColLabels)
 ColLabels <- gsub("^ChaImageWidth$", "PixelXDimension", ColLabels)
 ColLabels <- gsub("^ChaImageHeight$", "PixelYDimension", ColLabels)
 ColLabels <- gsub("^AdmDateModified$", "MetadataDate", ColLabels)
-ColLabels <- gsub("^RigAcknowledgement$", "Credit", ColLabels)
+ColLabels <- gsub("^RightsAcknowledgeLocal$", "Credit", ColLabels)
 
 
 ColLabels2 <- gsub("\\.", ":", ColLabels)
