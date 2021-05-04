@@ -8,9 +8,9 @@
 # STEP 1b: Report those records using "IPT Audubon Core - with Supp" report with these fields:
 # 
 #  [1] "Group1_key"                "ecatalogue_key"            "CATirn" (ecatalogue)              
-#  [4] "DarGlobalUniqueIdentifier" "AdmGUIDValue_tab"          "MulMimeType"              
+#  [4] "DarGlobalUniqueIdentifier" "AudIdentifier"          "MulMimeType"              
 #  [7] "DetResourceType"           "MulTitle"                  "irn" (emultimedia)                    
-# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"           "RightsAcknowledgeLocal"       
+# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"           "AudCitation"       
 # [13] "PUB_SummaryData"           "MulDescription"            "DetSubject_tab"           
 # [16] "DetResourceDetailsDate0"   "MulMimeFormat"             "ChaMd5Sum"                
 # [19] "ChaImageWidth"             "ChaImageHeight"            "AdmDateModified"          
@@ -39,7 +39,7 @@ SecDepar <- read.csv(file="data01raw/SecDepar.csv", stringsAsFactors = F, fileEn
 
 
 # clean linebreaks out of breakable fields:
-CatMMGroup1$RightsAcknowledgeLocal <- gsub("\\n+", "  ", CatMMGroup1$RightsAcknowledgeLocal)
+CatMMGroup1$AudCitation <- gsub("\\n+", "  ", CatMMGroup1$AudCitation)
 CatMMGroup1$MulDescription <- gsub("\\n+", " | ", CatMMGroup1$MulDescription)
 CatMMGroup1$SupMD5Checksum_tab <- gsub("\\n+", " | ", CatMMGroup1$SupMD5Checksum_tab)
 
@@ -88,7 +88,9 @@ SecDepar4$SecDepartment <- gsub("^\\s+|(^\\s+\\|\\s+)|\\s+\\|\\s+$|\\s+$", "", S
 
 
 # Overwrite main(preview)-jpg-md5sum with supp-ct-MD5sum
-CatMMGroup1$ChaMd5Sum[CatMMGroup1$DetResourceType == "Image | CT Data"] <- CatMMGroup1$SupMD5Checksum_tab[CatMMGroup1$DetResourceType == "Image | CT Data"]
+if (NROW(CatMMGroup1[which(CatMMGroup1$DetResourceSubtype == "CT Data"),]) > 0) {
+  CatMMGroup1$ChaMd5Sum[CatMMGroup1$DetResourceSubtype == "CT Data"] <- CatMMGroup1$SupMD5Checksum_tab[CatMMGroup1$DetResourceSubtype == "CT Data"]
+}
 CatMMGroup1 <- dplyr::select(CatMMGroup1, -SupMD5Checksum_tab)
 
 # Merge all data-frames
@@ -99,47 +101,39 @@ IPTout <- merge(IPTout, SecDepar4, by="Group1_key", all.x=T)
 IPTout <- unique(IPTout)
 
 # Pipe-delimit identifiers
-IPTout$AdmGUIDValue_tab <- gsub("\\n+", " | ", IPTout$AdmGUIDValue_tab)
-IPTout$AdmGUIDValue_tab <- gsub("\\s+\\|\\s+", " | ", IPTout$AdmGUIDValue_tab)
-# IPTout$AdmGUIDValue_tab <- gsub("ark:/", "https://n2t.net/ark:/", IPTout$AdmGUIDValue_tab)
+IPTout$AudIdentifier <- gsub("\\n+", " | ", IPTout$AudIdentifier)
+IPTout$AudIdentifier <- gsub("\\s+\\|\\s+", " | ", IPTout$AudIdentifier)
+# IPTout$AudIdentifier <- gsub("ark:/", "https://n2t.net/ark:/", IPTout$AudIdentifier)
 
 # Overwrite main(preview)-jpg-metadata with supp-ct-metadata [blank for now]
-IPTout$ChaImageHeight[IPTout$DetResourceType == "Image | CT Data"] <- ""
-IPTout$ChaImageWidth[IPTout$DetResourceType == "Image | CT Data"] <- ""
-IPTout$MulMimeFormat[IPTout$DetResourceType == "Image | CT Data"] <- ""
-
+if (NROW(IPTout[which(IPTout$DetResourceSubtype == "CT Data"),]) > 0) {
+  IPTout$ChaImageHeight[IPTout$DetResourceSubtype == "CT Data"] <- ""
+  IPTout$ChaImageWidth[IPTout$DetResourceSubtype == "CT Data"] <- ""
+  IPTout$MulMimeFormat[IPTout$DetResourceSubtype == "CT Data"] <- ""
+}
 
 # add URLs
-IPTout$accessURI <- ifelse(IPTout$AdmPublishWebNoPassword=="No",paste0(""),ifelse(nchar(IPTout$irn)>3,
-                             paste0(
-                               "https://fm-digital-assets.fieldmuseum.org/",
-                               substr(IPTout$irn,1,(nchar(IPTout$irn)-3)),
-                               "/", substr(IPTout$irn,nchar(IPTout$irn)-2,nchar(IPTout$irn)),
-                               "/", IPTout$MulIdentifier),
-                           ifelse(nchar(IPTout$irn==3),
-                             paste0("https://fm-digital-assets.fieldmuseum.org/0/", IPTout$irn),
-                             paste0("https://fm-digital-assets.fieldmuseum.org/0/",rep(0,3-nchar(IPTout$irn)),IPTout$irn))))
+IPTout$accessURI <- IPTout$AudAccessURI
 
 
 IPTout$accessURI[IPTout$DetResourceType == "URL"] <- IPTout$MulIdentifier[IPTout$DetResourceType == "URL"]
 
 
-IPTout$accessURI[IPTout$DetResourceType == "Image | CT Data"] <- paste0("https://mm.fieldmuseum.org/",
-                                                                        substr(IPTout$AdmGUIDValue_tab[IPTout$DetResourceType == "Image | CT Data"], 1, 36))
-
 # add ac:variant
-IPTout$variantLiteral <- "mediumQualityFurtherInformationURL"
+IPTout$variantLiteral <- "" 
+IPTout$variantLiteral[is.na(IPTout$AudIdentifier)==F] <- "mediumQualityFurtherInformationURL"
 
 # add ac:Service Access Point
-IPTout$hasServiceAccessPoint <- paste0("https://mm.fieldmuseum.org/",
-                                       substr(IPTout$AdmGUIDValue_tab,
-                                              1, 36))
+IPTout$hasServiceAccessPoint <- ""
+IPTout$hasServiceAccessPoint[is.na(IPTout$AudIdentifier)==F] <- paste0("https://mm.fieldmuseum.org/",
+                                                                       IPTout$AudIdentifier[is.na(IPTout$AudIdentifier)==F])
+
 
 # add separate rows for separate CT hasServiceAccessPoints
 # # [at least until GBIF can render multiple service access points]
-if (NROW(IPTout[IPTout$DetResourceType=="Image | CT Data",]) > 0) {
+if (NROW(IPTout[IPTout$DetResourceSubtype=="CT Data",]) > 0) {
   
-  CTrows <- IPTout[IPTout$DetResourceType=="Image | CT Data",]
+  CTrows <- IPTout[IPTout$DetResourceSubtype=="CT Data",]
   CTrows$variantLiteral <- "goodQualityFurtherInformationURL"
   CTrows$hasServiceAccessPoint <- paste0("https://n2t.net/",
                                          gsub(".*\\|\\s+", "", CTrows$AdmGUIDValue_tab))
@@ -156,7 +150,7 @@ IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)
 
 # Excluding GUID-check to allow multiple GUIDs in ac:identifier
 # # FILTER for badly-formed GUIDs 
-# GUIDcheck <- IPTout[which(nchar(IPTout$AdmGUIDValue_tab)!=36),]
+# GUIDcheck <- IPTout[which(nchar(IPTout$AudIdentifier)!=36),]
 # IPTout2 <- IPTout[which(!IPTout$irn %in% GUIDcheck$irn),]
 
 # DROP AdmPublishWebNoPassword=="No" records?
@@ -167,18 +161,18 @@ IPTout2$metadataLanguageLiteral <- "eng"
 
 # Rights & Credit
 IPTout2$WebStatement <- "https://www.fieldmuseum.org/field-museum-natural-history-conditions-and-suggested-norms-use-collections"
-IPTout2$RightsAcknowledgeLocal[which(is.na(IPTout2$RightsAcknowledgeLocal)==TRUE)] <- "https://www.fieldmuseum.org/preferred-citations-collections-data-and-images"
+IPTout2$AudCitation[which(is.na(IPTout2$AudCitation)==TRUE)] <- "https://www.fieldmuseum.org/preferred-citations-collections-data-and-images"
 
 
 # Add IDofContainingCollection
 
 SecDepartment <- c("Amphibians and Reptiles",
-                       "Birds",
-                       "Botany",
-                       "Fishes",
-                       "Insects",
-                       "Invertebrate Zoology",
-                       "Mammals")
+                   "Birds",
+                   "Botany",
+                   "Fishes",
+                   "Insects",
+                   "Invertebrate Zoology",
+                   "Mammals")
 
 IDofContainingCollection <- c("http://grbio.org/cool/05pf-h6mh",
                               "http://grbio.org/cool/91hw-75rx",
@@ -186,7 +180,7 @@ IDofContainingCollection <- c("http://grbio.org/cool/05pf-h6mh",
                               "http://grbio.org/cool/zdsi-36ka",
                               "http://grbio.org/cool/n9zv-z18s",
                               "http://grbio.org/cool/csae-ip0v",
-                              "http://grbio.org/cool/wvvh-z4v9")
+                              "http://grbio.org/cool/wvvh-z4v9") 
 
 CollID <- data.frame(SecDepartment, IDofContainingCollection)
 
@@ -200,24 +194,14 @@ IPTout3$hashFunction <- "MD5"
 IPTout3 <- IPTout3[,c(2:NCOL(IPTout3),1)]
 
 
-# split type / subtype from DetResourceType
-IPTout3 <- separate(IPTout3, DetResourceType,
-                    c("DetResourceType.A", "DetResourceType.B"),
-                    sep = " \\| ")
-
-IPTout3$DetResourceType.B <- gsub(" ", "", IPTout3$DetResourceType.B)
-
 # NOTE: Remember to relabel your columns
 ColLabels <- colnames(IPTout3)
 ColLabels <- gsub("^DarGlobalUniqueIdentifier$", "occurrenceID", ColLabels)
-ColLabels <- gsub("^AdmGUIDValue_tab$", "dcterms.identifier", ColLabels)
-# ColLabels <- gsub("^MulMimeType$", "subtypeLiteral", ColLabels)
-# ColLabels <- gsub("^DetResourceType$", "dc.type", ColLabels)
-ColLabels <- gsub("^DetResourceType.B$", "subtypeLiteral", ColLabels)
-ColLabels <- gsub("^DetResourceType.A$", "dc.type", ColLabels)
+ColLabels <- gsub("^AudIdentifier$", "dcterms.identifier", ColLabels)
+ColLabels <- gsub("^DetResourceSubtype$", "subtypeLiteral", ColLabels)
+ColLabels <- gsub("^DetResourceType$", "dc.type", ColLabels)
 ColLabels <- gsub("^MulTitle$", "dcterms.title", ColLabels)
 ColLabels <- gsub("^irn$", "providerManagedID", ColLabels)
-# ColLabels <- gsub("^AdmPublishWebNoPassword$", "hasServiceAccessPoint", ColLabels)
 ColLabels <- gsub("^RIG_SummaryData$", "dc.rights", ColLabels)
 ColLabels <- gsub("^RIGOWN_Summary$", "Owner", ColLabels)
 ColLabels <- gsub("^CRE_Summary$", "dc.creator", ColLabels)
@@ -230,10 +214,10 @@ ColLabels <- gsub("^ChaMd5Sum$", "hashValue", ColLabels)
 ColLabels <- gsub("^ChaImageWidth$", "PixelXDimension", ColLabels)
 ColLabels <- gsub("^ChaImageHeight$", "PixelYDimension", ColLabels)
 ColLabels <- gsub("^AdmDateModified$", "MetadataDate", ColLabels)
-ColLabels <- gsub("^RightsAcknowledgeLocal$", "Credit", ColLabels)
-
+ColLabels <- gsub("^AudCitation$", "Credit", ColLabels)
 
 ColLabels2 <- gsub("\\.", ":", ColLabels)
+# ColLabels2 <- gsub("^Aud", "", ColLabels2)  # duplicates some columns currently
 
 
 # EXPORT
