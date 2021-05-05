@@ -71,7 +71,7 @@ relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relati
 
 # cleanup NA values
 relat[is.na(relat)] <- ""
-relat$relationshipRemarks <- gsub("^NA\\s+\\|\\s+", "", relat$relationshipRemarks)
+relat$relationshipRemarks <- gsub('^NA\\s+\\|\\s+|"', "", relat$relationshipRemarks)
 
 
 # Prep final export table
