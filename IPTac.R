@@ -5,18 +5,23 @@
 
 # STEP 1a: Retrieve dataset in EMu/ecatalogue 
 #          (e.g., for Fishes, find all Fishes catalogue records where Publish=OK & HasMM=Y)
-# STEP 1b: Report those records using "IPT Audubon Core - with Supp" report with these fields:
-# 
-#  [1] "Group1_key"                "ecatalogue_key"            "CATirn" (ecatalogue)              
-#  [4] "DarGlobalUniqueIdentifier" "AudIdentifier"          "MulMimeType"              
-#  [7] "DetResourceType"           "MulTitle"                  "irn" (emultimedia)                    
-# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"           "AudCitation"       
-# [13] "PUB_SummaryData"           "MulDescription"            "DetSubject_tab"           
-# [16] "DetResourceDetailsDate0"   "MulMimeFormat"             "ChaMd5Sum"                
-# [19] "ChaImageWidth"             "ChaImageHeight"            "AdmDateModified"          
-# [22] "MulIdentifier"             "SummaryData" (erights)     "RIGOWN_SummaryData" (RigOwner)
-# [25] "SecDepartment"             "SupMD5Checksum_tab"
+# STEP 1b: Report those records using "IPT Audubon Core - with Supp v2" report with these fields:
 #
+# [1] "Group1_key"                 "ecatalogue_key"              "CATirn"                   
+# [4] "DarGlobalUniqueIdentifier"  "AdmGUIDValue_tab"            "MulMimeType"              
+# [7] "DetResourceType"            "MulTitle"                    "irn"                      
+# [10] "AdmPublishWebNoPassword"   "RIG_SummaryData"             "RigAcknowledgement"       
+# [13] "PUB_SummaryData"           "MulDescription"              "DetSubject_tab"           
+# [16] "DetResourceDetailsDate0"   "MulMimeFormat"               "ChaMd5Sum"                
+# [19] "ChaImageWidth"             "ChaImageHeight"              "AdmDateModified"          
+# [22] "MulIdentifier"             "DetResourceSubtype"          "RightsAcknowledgeLocal"   
+# [25] "AudAccessURI"              "AudAssociatedObservation"    "AudAssociatedSpecimen"    
+# [28] "AudCaptureDevice"          "AudCitation"                 "AudDerivedFrom"           
+# [31] "AudFundingAttribution"     "AudIdentifier"               "AudLifeStage"             
+# [34] "AudNumbers"                "AudRelatedGeography"         "AudRelatedResourceID"     
+# [37] "AudSex"                    "AudSubjectOrientation"       "AudSubjectPart_tab"       
+# [40] "AudTaxonCoverage"          "AudTemporalCoverage"         "AudVernacularName"
+# "RIGOWN_SummaryData" (RigOwner)  "CRE_SummaryData" (MMcreator) "SecDepartment" (-> IDofContainColl)
 
 
 # STEP 2: Run script:
@@ -48,7 +53,7 @@ MMcreator$keyseq <- sequence(rle(as.character(MMcreator$Group1_key))$lengths)
 # select only the irn, table-field, & irnseq fields
 MM2 <- MMcreator[,2:NCOL(MMcreator)]
 MM3 <- spread(MM2, keyseq, CRE_SummaryData, sep="_", convert=T)
-# Need to manually check next line & fix # of united keyseq columns (if <> 3)
+# Check next line & fix # of united keyseq columns (if <> 3)
 if (ncol(MM3) > 2) {
   MM3cols <- colnames(MM3)[2:ncol(MM3)]
   MM4 <- unite(MM3, "CRE_Summary", MM3cols, sep=" | ", remove = T)
@@ -64,8 +69,15 @@ RIGowner$keyseq <- sequence(rle(as.character(RIGowner$Group1_key))$lengths)
 # select only the irn, table-field, & irnseq fields
 RIG2 <- RIGowner[,2:NCOL(RIGowner)]
 RIG3 <- spread(RIG2, keyseq, RIGOWN_SummaryData, sep="_", convert=T)
-#RIG4 <- unite(RIG3, RIGOWN_Summary, keyseq_1, sep=" | ", remove = T)  # No multi-values
-colnames(RIG3)[2] <- "RIGOWN_Summary"
+# Check next line & fix # of united keyseq columns (if <> 3)
+if (NCOL(RIG3) > 2) {
+  RIG3cols <- colnames(RIG3)[2:NCOL(RIG3)]
+  RIG4 <- unite(RIG3, "RIGOWN_Summary", RIG3cols, sep=" | ", remove = T)
+} else {
+  colnames(RIG3)[2] <- "RIGOWN_Summary"
+  RIG4 <- RIG3
+}
+RIG4$RIGOWN_Summary <- gsub("\\s+\\|\\s+NA", "", RIG4$RIGOWN_Summary)
 
 
 # Filter SecDepar to only show Collection Codes
@@ -146,7 +158,17 @@ if (NROW(IPTout[IPTout$DetResourceSubtype=="CT Data",]) > 0) {
 IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)] <- gsub("\n", " | ", IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)])
 IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)] <- gsub("\n", " | ", IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)])
 IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)] <- gsub("\n", " | ", IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)])
+IPTout$RightsAcknowledgeLocal[which(grepl("\n", IPTout$RightsAcknowledgeLocal)==TRUE)] <- gsub("\n", "  ", IPTout$RightsAcknowledgeLocal[which(grepl("\n", IPTout$RightsAcknowledgeLocal)==TRUE)])
 
+# also strip quotes
+IPTout$AudRelatedGeography[which(grepl('"', IPTout$AudRelatedGeography)==TRUE)] <- gsub('"', "", IPTout$AudRelatedGeography[which(grepl('"', IPTout$AudRelatedGeography)==TRUE)])
+IPTout$MulDescription[which(grepl('"', IPTout$MulDescription)==TRUE)] <- gsub('"', "", IPTout$MulDescription[which(grepl('"', IPTout$MulDescription)==TRUE)])
+IPTout$MulTitle[which(grepl('"', IPTout$MulTitle)==TRUE)] <- gsub('"', "", IPTout$MulTitle[which(grepl('"', IPTout$MulTitle)==TRUE)])
+IPTout$RightsAcknowledgeLocal[which(grepl('"', IPTout$RightsAcknowledgeLocal)==TRUE)] <- gsub('"', "", IPTout$RightsAcknowledgeLocal[which(grepl('"', IPTout$RightsAcknowledgeLocal)==TRUE)])
+
+# not currently used/mapped, but fixed in case
+IPTout$RigAcknowledgement[which(grepl("\n", IPTout$RigAcknowledgement)==TRUE)] <- gsub("\n", "  ", IPTout$RigAcknowledgement[which(grepl("\n", IPTout$RigAcknowledgement)==TRUE)])
+IPTout$RigAcknowledgement[which(grepl('"', IPTout$RigAcknowledgement)==TRUE)] <- gsub('"', "", IPTout$RigAcknowledgement[which(grepl('"', IPTout$RigAcknowledgement)==TRUE)])
 
 # Excluding GUID-check to allow multiple GUIDs in ac:identifier
 # # FILTER for badly-formed GUIDs 
@@ -225,7 +247,7 @@ IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
 IPTout4 <- unique(IPTout3)
 write.table(IPTout4, 
             file=paste0("data02output/field_media_", dept,".csv"),
-            row.names = F, sep=",", na="", col.names = F)
+            row.names = F, sep=",", na="", col.names = F, quote = TRUE)
 
 if(exists("GUIDcheck")) {
   
@@ -233,7 +255,7 @@ if(exists("GUIDcheck")) {
   
   write.table(GUIDcheck,
               file = paste0("data02output/guid_check_", dept, ".csv"),
-              row.names = F, sep=",", na="", col.names = T)  
+              row.names = F, sep=",", na="", col.names = T, quote = TRUE)  
   
 } else {
 
