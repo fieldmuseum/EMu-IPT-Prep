@@ -26,7 +26,7 @@
 
 # STEP 2: Run script:
 
-dept <- readline("Enter the collection you're prepping (e.g., 'bird_egg' or 'bird'): ")
+dept <- readline("Enter the collection you're prepping (e.g. 'bird'): ")
 
 # IPT resource names are:
 #     bird, bird_egg, bryophyte, fishes, fossinverts, fungi, herp, 

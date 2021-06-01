@@ -31,6 +31,7 @@ relat <- data.frame("resourceID" = relat_raw$DarGlobalUniqueIdentifier,
                     "Count" = relat_raw$RelNhCount,
                     "relationshipAccordingTo" = relat_raw$RelNhAccordingToRef_SummaryData,
                     "relationshipEstablishedDate" = relat_raw$RelNhDate,
+                    "RelNhRepo_SummaryData" = relat_raw$RelNhRepo_SummaryData,
                     "RelNotes" = relat_raw$RelNotes,
                     stringsAsFactors = FALSE)
 
@@ -64,6 +65,12 @@ relat$relatedResourceID[is.na(relat$relatedResourceID)==T] <- relat$relatedResou
 relat$scientificName[is.na(relat$scientificName)==T] <- relat$scientificName_2[is.na(relat$scientificName)==T]
 
 
+# Add related Repo to relationshipRemarks
+relat$relationshipRemarks[is.na(relat$RelNhRepo_SummaryData)==F] <- paste0(relat$relationshipRemarks[is.na(relat$RelNhRepo_SummaryData)==F],
+                                                                           " | relatedResourceID Repo: ",
+                                                                           relat$RelNhRepo_SummaryData[is.na(relat$RelNhRepo_SummaryData)==F])
+
+
 # Add scientificName to relationshipRemarks until IPT can map sciName
 relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relationshipRemarks[is.na(relat$scientificName)==F],
                                                                     " | scientificName: ",
@@ -71,7 +78,10 @@ relat$relationshipRemarks[is.na(relat$scientificName)==F] <- paste0(relat$relati
 
 # cleanup NA values
 relat[is.na(relat)] <- ""
+# Clean relationshipRemarks
 relat$relationshipRemarks <- gsub('^NA\\s+\\|\\s+|"', "", relat$relationshipRemarks)
+relat$relationshipRemarks <- gsub("PrepType:\\s*\\|\\s*", "", relat$relationshipRemarks)
+
 
 
 # Prep final export table
