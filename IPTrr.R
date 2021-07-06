@@ -81,6 +81,7 @@ relat[is.na(relat)] <- ""
 # Clean relationshipRemarks
 relat$relationshipRemarks <- gsub('^NA\\s+\\|\\s+|"', "", relat$relationshipRemarks)
 relat$relationshipRemarks <- gsub("PrepType:\\s*\\|\\s*", "", relat$relationshipRemarks)
+relat$relationshipRemarks <- gsub("(\\s*\\r\\s*|\\s*\\n\\s*)+", " ; ", relat$relationshipRemarks)
 
 
 
