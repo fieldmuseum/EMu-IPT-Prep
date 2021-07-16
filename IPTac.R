@@ -188,7 +188,8 @@ IPTout2$AudCitation[which(is.na(IPTout2$AudCitation)==TRUE)] <- "https://www.fie
 
 # Add IDofContainingCollection
 
-SecDepartment <- c("Amphibians and Reptiles",
+SecDepartment <- c("Action",
+                   "Amphibians and Reptiles",
                    "Birds",
                    "Botany",
                    "Fishes",
@@ -196,7 +197,8 @@ SecDepartment <- c("Amphibians and Reptiles",
                    "Invertebrate Zoology",
                    "Mammals")
 
-IDofContainingCollection <- c("http://grbio.org/cool/05pf-h6mh",
+IDofContainingCollection <- c("http://biocol.org/urn:lsid:biocol.org:col:34795",
+                              "http://grbio.org/cool/05pf-h6mh",
                               "http://grbio.org/cool/91hw-75rx",
                               "http://grbio.org/cool/90as-ki3a",
                               "http://grbio.org/cool/zdsi-36ka",
