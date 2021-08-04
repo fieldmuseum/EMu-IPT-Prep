@@ -56,7 +56,7 @@ MM3 <- spread(MM2, keyseq, CRE_SummaryData, sep="_", convert=T)
 # Check next line & fix # of united keyseq columns (if <> 3)
 if (ncol(MM3) > 2) {
   MM3cols <- colnames(MM3)[2:ncol(MM3)]
-  MM4 <- unite(MM3, "CRE_Summary", MM3cols, sep=" | ", remove = T)
+  MM4 <- unite(MM3, "CRE_Summary", all_of(MM3cols), sep=" | ", remove = T)
 } else {
   colnames(MM3)[2] <- "CRE_Summary"
   MM4 <- MM3
@@ -88,7 +88,7 @@ SecDepar3 <- spread(SecDepar2, keyseq, SecDepartment, sep="_", convert=T, fill="
 # Need to manually check next line & fix # of united keyseq columns (if <> 3)
 if (ncol(SecDepar3) > 2) {
   SecCols <- colnames(SecDepar3)[2:ncol(SecDepar3)]
-  SecDepar4 <- unite(SecDepar3, "SecDepartment", SecCols, sep=" | ", remove = T)
+  SecDepar4 <- unite(SecDepar3, "SecDepartment", all_of(SecCols), sep=" | ", remove = T)
   # SecDepar4 <- unite(SecDepar3, SecDepartment, keyseq_1:keyseq_3, sep=" | ", remove = T)
 } else {
   colnames(SecDepar3)[2] <- "SecDepartment"
