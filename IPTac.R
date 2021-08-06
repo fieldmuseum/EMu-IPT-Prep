@@ -154,7 +154,9 @@ if (NROW(IPTout[IPTout$DetResourceSubtype=="CT Data",]) > 0) {
 
 }
 
-# may also need to gsub("\n", " \\| ", [all COLs, or at least table->text cols?])
+# strip line-breaks 
+# may also need to gsub("\n", " \\| ", [all COLs, or at least table->text cols])
+IPTout$AudSubjectPart_tab[which(grepl("\n", IPTout$AudSubjectPart_tab)==TRUE)] <- gsub("\n", " | ", IPTout$AudSubjectPart_tab[which(grepl("\n", IPTout$AudSubjectPart_tab)==TRUE)])
 IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)] <- gsub("\n", " | ", IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)])
 IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)] <- gsub("\n", " | ", IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)])
 IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)] <- gsub("\n", " | ", IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)])
