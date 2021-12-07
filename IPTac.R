@@ -31,6 +31,7 @@ dept <- readline("Enter the collection you're prepping (e.g. 'bird'): ")
 # IPT resource names are:
 #     bird, bird_egg, bryophyte, fishes, fossinverts, fungi, herp, 
 #     insect, invertebrate, lichen, mammal, paleobot, pteridophyte
+# For Observations:  bird_obs, mammal_obs
 
 # install.packages("tidyr")  # uncomment if not already installed
 library("tidyr")
