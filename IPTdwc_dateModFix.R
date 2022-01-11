@@ -10,21 +10,18 @@ library("readr")
 cat <- read_csv(file = "data01raw/IPT_DwC/ecatalog.csv",
                 guess_max = 475000)
 
-# # NOTE - make sure file encoding is properly importedL
-# # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
 
-# test <- data.frame("origmod" = cat$DarDateLastModified,
-#                    "modmod" = "",
-#                    stringsAsFactors = FALSE)
-
+# Add leading zero for month
 cat$DarDateLastModified <- gsub("(^\\d{4}\\-)(\\d{1}\\-)",
                                 "\\10\\2", 
                                 cat$DarDateLastModified)
 
+# Add leading zero for day
 cat$DarDateLastModified <- gsub("(^\\d+\\-\\d+\\-)(\\dT)",
                                 "\\10\\2", 
                                 cat$DarDateLastModified)
 
+# Change suffix from timezone to UTF-relative
 cat$DarDateLastModified <- gsub("CMT$",
                                 "-0600", 
                                 cat$DarDateLastModified)
