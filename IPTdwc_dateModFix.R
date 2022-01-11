@@ -1,8 +1,8 @@
 # Reformat EMu csv's 'DarDateModified' for IPT dwc:modified
 
-# 1 - run the appropriate specimen "IPT" report
-# (IPT_Insects_CE?)
-
+# Step 1 - In EMu, run the appropriate specimen "IPT" report (e.g. "IPT_Insects_CE")
+# Step 2 - Put the output ecatalog.csv in this repo's data01raw/IPT_DwC/ dir
+# Step 3 - Run the script below:
 
 library("readr")
 
