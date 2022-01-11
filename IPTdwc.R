@@ -1,6 +1,8 @@
 # Clean CSVs for DwC
 
 # 1 - run the appropriate specimen "IPT" report
+# 2 - add the output 'ecatalog.csv' to the data01raw/iptSpec/ directory in this repo
+# 3 - run this script
 
 library("readr")
 

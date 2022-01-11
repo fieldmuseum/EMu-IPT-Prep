@@ -24,9 +24,10 @@
 # "RIGOWN_SummaryData" (RigOwner)  "CRE_SummaryData" (MMcreator) "SecDepartment" (-> IDofContainColl)
 
 
-# STEP 2: Run script:
+# STEP 2: Run this script:
 
-dept <- readline("Enter the collection you're prepping (e.g. 'bird'): ")
+# dept <- readline("Enter the collection you're prepping (e.g. 'bird'): ")
+dept <- 'collection'
 
 # IPT resource names are:
 #     bird, bird_egg, bryophyte, fishes, fossinverts, fungi, herp, 
