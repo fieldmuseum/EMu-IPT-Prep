@@ -38,6 +38,7 @@ Input for each script is a CSV dataset, reported out of EMu.  See the header-com
 
 ## 3. Clone or Download this repo
 1. To clone the repo, [UChicago's steps here](https://cfss.uchicago.edu/setup/git-with-rstudio/) are helpful.
+
 Or:
 1. Simply download the [EMu-IPT-prep](https://github.com/fieldmuseum/EMu-IPT-Prep) repo as a .zip, and unzip it
 2. Open RStudio, and create a new project by going to File --> New Project --> Existing Directory (select the 'EMu-IPT-prep' directory), and clicking 'Create Project'
@@ -47,8 +48,10 @@ Scripts can be run using R's `source()` function if input-files are named proper
 When running `source`, setting `verbose=TRUE` can be useful in case warnings or errors pop up.  Checking input- and output-data in a text-editor -- or in RStudio's 'Environment' pane (usually upper right) after running a script -- is recommended.
 1. In RStudio, make sure you're in the EMu-IPT-prep project (The top of the RStudio window should show the project directory path. If it's wrong, go to File -> Open Project -> go to the EMu-IPT-prep dir, and open its '.RProj' file).
 2. Run the `source` function in the Console pane by typing `source("[script-filename]", verbose=TRUE)` and hitting enter -- e.g.:
+
     `source("IPTac.R", verbose=TRUE)`
-2. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
+
+3. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
 
 
 # To do:
