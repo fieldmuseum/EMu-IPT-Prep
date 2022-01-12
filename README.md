@@ -45,13 +45,14 @@ Or:
 
 ## 4. Run a Script
 Scripts can be run using R's `source()` function if input-files are named properly and in the right directory.
-When running `source`, setting `verbose=TRUE` can be useful in case warnings or errors pop up.  Checking input- and output-data in a text-editor -- or in RStudio's 'Environment' pane (usually upper right) after running a script -- is recommended.
+When running `source`, setting `verbose=TRUE` can be useful if warnings or errors pop up. After running a script, cross-checking the input- and output-data in a text-editor -- or in RStudio's 'Environment' pane (usually upper right) -- is recommended.
 1. In RStudio, make sure you're in the EMu-IPT-prep project (The top of the RStudio window should show the project directory path. If it's wrong, go to File -> Open Project -> go to the EMu-IPT-prep dir, and open its '.RProj' file).
 2. Run the `source` function in the Console pane by typing `source("[script-filename]", verbose=TRUE)` and hitting enter -- e.g.:
 
     `source("IPTac.R", verbose=TRUE)`
 
-3. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
+3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
+4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
 
 
 # To do:
