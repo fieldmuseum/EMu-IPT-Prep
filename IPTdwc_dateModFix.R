@@ -7,10 +7,12 @@
 library("readr")
 
 # Import EMu CSV report
+print('Importing input CSV -- large datasets may take a minute...')
 cat <- read_csv(file = "data01raw/IPT_DwC/ecatalog.csv",
                 guess_max = 475000)
 
 
+print('Converting dates...')
 # Add leading zero for month
 cat$DarDateLastModified <- gsub("(^\\d{4}\\-)(\\d{1}\\-)",
                                 "\\10\\2", 
@@ -34,11 +36,18 @@ cat$DarDateLastModified <- gsub("CMT$",
 # Setup output directory & csv
 if (!dir.exists("data02output")) {
   dir.create("data02output")
+  print('Created "data02output" directory')
 }
 
+output_file <- "data02output/ecatalog_dateMod_processed.csv"
+
+print(paste('Writing output CSV -- large datasets may take a minute...'))
 write.csv(cat, 
-          "data02output/ecatalog_dateMod_processed.csv",
+          output_file,
           na = "",
           row.names = FALSE,
           fileEncoding = "UTF-8",
           quote = 1:NCOL(cat))
+
+print(paste('Finished -- check output: ', output_file))
+
