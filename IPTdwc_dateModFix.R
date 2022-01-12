@@ -31,6 +31,11 @@ cat$DarDateLastModified <- gsub("CMT$",
 #                                 "\\1",
 #                                 cat$DarDateLastModified)
 
+# Setup output directory & csv
+if (!dir.exists("data02output")) {
+  dir.create("data02output")
+}
+
 write.csv(cat, 
           "data02output/ecatalog_dateMod_processed.csv",
           na = "",

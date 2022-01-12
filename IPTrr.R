@@ -102,18 +102,10 @@ if(!dir.exists("data02output/relation")) {
     dir.create("data02output")
     print("created 'output' directory")
     
-  } else {
-    
-    print("output directory exists")
-    
   }
   
   dir.create("data02output/relation") 
   print("created 'relation' output subdirectory")
-  
-} else {
-  
-  print("relation output directory exists")
   
 }
 

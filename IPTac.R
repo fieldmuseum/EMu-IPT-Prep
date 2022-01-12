@@ -248,6 +248,11 @@ ColLabels2 <- gsub("\\.", ":", ColLabels)
 # ColLabels2 <- gsub("^Aud", "", ColLabels2)  # duplicates some columns currently
 
 
+# Setup output directory & csv
+if (!dir.exists("data02output")) {
+  dir.create("data02output")
+}
+
 # EXPORT
 IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
 IPTout4 <- unique(IPTout3)

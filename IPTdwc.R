@@ -1,7 +1,7 @@
 # Clean CSVs for DwC
 
 # 1 - run the appropriate specimen "IPT" report
-# 2 - add the output 'ecatalog.csv' to the data01raw/iptSpec/ directory in this repo
+# 2 - add the output 'ecatalog.csv' to the data01raw/iptSpec/ directory
 # 3 - run this script
 
 library("readr")
@@ -10,7 +10,7 @@ library("readr")
 # Import CSVs
 cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv")
 
-# # NOTE - make sure file encoding is properly importedL
+# # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
 
 
