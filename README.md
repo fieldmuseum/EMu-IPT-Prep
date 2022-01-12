@@ -33,17 +33,43 @@ EMu-IPT-Prep scripts primarily use tidyverse's `tidyr` and `readr` packages. For
 2. In RStudio, install the required tidyverse packages in the 'Console' pane (usually lower-left) by typing the following and hitting enter:
     `install.packages('tidyverse')`
 
-## 2. Get Data from EMu
-Input for each script is a CSV dataset, reported out of EMu.  See the header-comments in each script for the recommended CSV report, and where the put the output CSV file/s.
-
-## 3. Clone or Download this repo
+## 2. Clone or Download this repo
 1. To clone the repo, [UChicago's steps here](https://cfss.uchicago.edu/setup/git-with-rstudio/) are helpful.
 
 Or:
 1. Simply download the [EMu-IPT-prep](https://github.com/fieldmuseum/EMu-IPT-Prep) repo as a .zip, and unzip it
 2. Open RStudio, and create a new project by going to File --> New Project --> Existing Directory (select the 'EMu-IPT-prep' directory), and clicking 'Create Project'
 
-## 4. Run a Script
+## 3. Get Data from EMu
+The input files for the EMu-IPT-prep scripts are CSV datasets generated from EMu reports.
+- First, create a `data01raw` directory in this repo
+- Run the script's corresponding EMu CSV report and put the output CSVs in the location described below:
+
+  - For Audubon Core scripts, e.g. `IPTac.R`:
+    - EMu Catalogue report = 'IPT Audubon Core' CSV report
+    - Location for all EMu csv's = `data01raw/`
+
+  - For Darwin Core scripts, e.g. `IPTdwc.R`:
+    - run an EMu Catalogue 'IPT_General' CSV report (or IPT_[Collection Area])
+    - Location for EMu csv: `data01raw/IPT_DwC`
+
+  - For Resource Relationship scripts, e.g. `IPTrr.R`
+    - run an EMu Catalogue 'IPT Resource Relationship' CSV report
+    - Location for EMu csv: `data01raw/relationships`
+
+
+## 4a. Run a Script from command line
+1. Open command line (cmd, terminal, etc), and check that R can run there by typing `Rscript` and hitting enter.
+    - If a 'command not found' warning appears, add Rscript.exe's path (e.g. `C:\Program Files\R\R-4.1.2\bin`) to the Path environment variable 
+    - [Steps to add a path are here](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/)
+2. `cd` to this root directory of this repo
+3. Use `Rscript` to run a script in commandline -- e.g.: `Rscript IPTac.R`
+    - Use `--verbose` to see more info while the script runs -- e.g.: `Rscript --verbose IPTac.R`
+4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
+
+
+## 4b. Run a Script from RStudio
+
 Scripts can be run using R's `source()` function if input-files are named properly and in the right directory.
 When running `source`, setting `verbose=TRUE` can be useful if warnings or errors pop up. After running a script, cross-checking the input- and output-data in a text-editor -- or in RStudio's 'Environment' pane (usually upper right) -- is recommended.
 1. In RStudio, make sure you're in the EMu-IPT-prep project (The top of the RStudio window should show the project directory path. If it's wrong, go to File -> Open Project -> go to the EMu-IPT-prep dir, and open its '.RProj' file).
