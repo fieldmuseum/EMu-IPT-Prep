@@ -11,7 +11,7 @@ Information on how to structure data/reports from EMu is at the top of each scri
 ## IPTcd.R
   - prepares a [draft] [Collections Description](https://github.com/tdwg/cd) dataset for inventories, accessions, or other data not yet resolved to 'occurrence-level' specificity.
 
-## IPTdwc.R
+## IPTdwc.R [DRAFT]
   - includes checks to help prepare EMu Catalogue data as a [Darwin Core](https://github.com/tdwg/dwc/blob/master/docs/terms/index.md) dataset.
 
 ## IPTdwc_dateModFix.R
