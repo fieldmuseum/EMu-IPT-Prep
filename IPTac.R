@@ -278,3 +278,4 @@ if(exists("GUIDcheck")) {
 print(Sys.time())
 
 print("REMINDER - Check output in notepad -- does # rows there match rows in IPTout4? ")
+print(paste("Number of rows in IPTout4 (includes header-row) =", NROW(IPTout4)))
