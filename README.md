@@ -76,6 +76,7 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 2. Run the `source` function in the Console pane by typing `source("[script-filename]", verbose=TRUE)` and hitting enter -- e.g.:
 
     `source("IPTac.R", verbose=TRUE)` # For Audubon Core
+    
     `source("IPTdwc.R", verbose=TRUE)` # For Darwin Core
 
 3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
