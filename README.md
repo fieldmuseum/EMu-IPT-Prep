@@ -42,7 +42,10 @@ Or:
 
 ## 3. Get Data from EMu
 The input files for the EMu-IPT-prep scripts are CSV datasets generated from EMu reports.
-- First, create a `data01raw` directory in this repo
+In this repo:
+- First, create a `data01raw` directory
+- Second, create a `data02output` directory
+
 - Run the script's corresponding EMu CSV report and put the output CSVs in the location described below:
 
   - For Audubon Core scripts, e.g. `IPTac.R`:
