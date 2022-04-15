@@ -6,6 +6,19 @@
 
 library("readr")
 
+if(!dir.exists("data01raw/iptSpec")) {
+  
+  if(!dir.exists("data01output")) {
+    
+    dir.create("data01output")
+    
+  }
+  
+  dir.create("data01output")
+  print("Dear Human: I created a 'data01output/iptSpec' directory")
+  print("-- Please add 'ecatalog.csv' to the 'iptSpec' directory")
+  
+}
 
 # Import CSVs
 cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv")
@@ -24,6 +37,13 @@ piper <- function (x) {
 
 # Check/Replace carriage returns
 cat2 <- piper(cat)
+
+if(!dir.exists("data02output")) {
+  
+  dir.create("data02output")
+  print("created 'output' directory")
+  
+}
 
 csv_path <- "data02output/"
                          
