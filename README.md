@@ -51,7 +51,7 @@ The input files for the EMu-IPT-prep scripts are CSV datasets generated from EMu
 
   - For Darwin Core scripts, e.g. `IPTdwc.R`:
     - run an EMu Catalogue 'IPT_General' CSV report (or IPT_[Collection Area])
-    - Location for EMu csv: `data01raw/IPT_DwC`
+    - Location for EMu csv: `data01raw/iptSpec/`
 
   - For Resource Relationship scripts, e.g. `IPTrr.R`
     - run an EMu Catalogue 'IPT Resource Relationship' CSV report
