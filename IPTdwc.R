@@ -25,7 +25,8 @@ piper <- function (x) {
 # Check/Replace carriage returns
 cat2 <- piper(cat)
 
-
+csv_path <- "data02output/"
+                         
 # Write out results
 write_csv(cat2, 
           na = "",
