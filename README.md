@@ -75,7 +75,8 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 1. In RStudio, make sure you're in the EMu-IPT-prep project (The top of the RStudio window should show the project directory path. If it's wrong, go to File -> Open Project -> go to the EMu-IPT-prep dir, and open its '.RProj' file).
 2. Run the `source` function in the Console pane by typing `source("[script-filename]", verbose=TRUE)` and hitting enter -- e.g.:
 
-    `source("IPTac.R", verbose=TRUE)`
+    `source("IPTac.R", verbose=TRUE)` # For Audubon Core
+    `source("IPTdwc.R", verbose=TRUE)` # For Darwin Core
 
 3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
 4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
