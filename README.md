@@ -54,7 +54,7 @@ In this repo:
 
   - For Darwin Core scripts, e.g. `IPTdwc.R`:
     - run an EMu Catalogue 'IPT_General' CSV report (or IPT_[Collection Area])
-    - Note that the file should be the default EMu report name "ecatalog.csv"
+    - Note that the file should be the default EMu report name `ecatalog.csv`
     - Location for EMu csv: `data01raw/iptSpec/`
 
   - For Resource Relationship scripts, e.g. `IPTrr.R`
