@@ -54,6 +54,7 @@ In this repo:
 
   - For Darwin Core scripts, e.g. `IPTdwc.R`:
     - run an EMu Catalogue 'IPT_General' CSV report (or IPT_[Collection Area])
+    - Note that the file should be the default EMu report name "ecatalog.csv"
     - Location for EMu csv: `data01raw/iptSpec/`
 
   - For Resource Relationship scripts, e.g. `IPTrr.R`
@@ -84,6 +85,8 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 
 3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
 4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
+5. Rename the file to the corresponding collection e.g. field_ipt_insects
+6. zip the file
 
 
 # To do:
