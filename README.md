@@ -90,7 +90,7 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 
 # A note on warning messages
 `One or more parsing issues, see problems() for details`
-- try using guess max tlike this `cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv", guess_max = 1000000)`
+- try using guess max like this `cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv", guess_max = 1000000)`
 - Basically "guess_max" tells R to look at more rows before guessing which data-types to assign to columns... we could get more strict about schemas, but for now should be good. 
 
 # To do:
