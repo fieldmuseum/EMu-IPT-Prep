@@ -21,7 +21,8 @@ if(!dir.exists("data01raw/iptSpec")) {
 }
 
 # Import CSVs
-cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv")
+cat <- read_csv("data01raw/iptSpec/ecatalog.csv",
+                guess_max = 1000000)
 
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
