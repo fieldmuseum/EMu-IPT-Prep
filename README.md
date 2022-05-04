@@ -85,7 +85,7 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 
 3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
 4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
-5. Rename the file to the corresponding collection e.g. field_ipt_insects
+5. Rename the output file `Catalog2.csv` to the corresponding collection e.g. field_ipt_insects
 6. zip the file
 
 
