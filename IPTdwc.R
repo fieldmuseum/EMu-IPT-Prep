@@ -34,7 +34,7 @@ if (!'DarDateLasteModified' %in% colnames(cat)) {
   }
 }
 
-if ('DarDateLasteModified' %in% colnames(cat)) {
+if ('DarDateLastModified' %in% colnames(cat)) {
   # if (NROW(cat$DarDateLastModified) > 0) {
  
   print('Converting dates...')
@@ -84,6 +84,8 @@ if(!dir.exists("data02output")) {
 
 csv_path <- "data02output/"
                          
+print("Outputing prepped file here: data02output/Catalog2.csv")
+
 # Write out results
 write_csv(cat2, 
           na = "",
