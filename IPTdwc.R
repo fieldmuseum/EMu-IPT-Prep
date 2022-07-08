@@ -27,7 +27,15 @@ cat <- read_csv("data01raw/iptSpec/ecatalog.csv",
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
 
-if (NROW(cat$DarDateLastModified) > 0) {
+if (!'DarDateLasteModified' %in% colnames(cat)) {
+  
+  if ('modified' %in% colnames(cat)) {
+    cat$DarDateLastModified <- cat$modified
+  }
+}
+
+if ('DarDateLasteModified' %in% colnames(cat)) {
+  # if (NROW(cat$DarDateLastModified) > 0) {
  
   print('Converting dates...')
   # Add leading zero for month
@@ -49,6 +57,10 @@ if (NROW(cat$DarDateLastModified) > 0) {
   # cat$DarDateLastModified <- gsub("(T\\d+\\:\\d+)(\\:\\d{2}\\.\\d+)",
   #                                 "\\1",
   #                                 cat$DarDateLastModified)
+
+} else {
+  
+  print("Warning - Input CSV missing 'DarDateLastModified' or 'modified' column")
   
 }
 
@@ -75,4 +87,4 @@ csv_path <- "data02output/"
 # Write out results
 write_csv(cat2, 
           na = "",
-          path = paste0(csv_path,"Catalog2.csv"))
+          file = paste0(csv_path,"Catalog2.csv"))
