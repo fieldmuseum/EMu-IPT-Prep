@@ -150,7 +150,7 @@ if (NROW(IPTout[IPTout$DetResourceSubtype=="CT Data",]) > 0) {
   CTrows <- IPTout[IPTout$DetResourceSubtype=="CT Data",]
   CTrows$variantLiteral <- "goodQualityFurtherInformationURL"
   CTrows$hasServiceAccessPoint <- paste0("https://n2t.net/",
-                                         gsub(".*\\|\\s+", "", CTrows$AdmGUIDValue_tab))
+                                         gsub("(.*)(ark.*)", "\\2", CTrows$AdmGUIDValue_tab))
   
   IPTout <- rbind(IPTout, CTrows)
 
@@ -163,6 +163,7 @@ IPTout$DetSubject_tab[which(grepl("\n", IPTout$DetSubject_tab)==TRUE)] <- gsub("
 IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)] <- gsub("\n", " | ", IPTout$MulDescription[which(grepl("\n", IPTout$MulDescription)==TRUE)])
 IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)] <- gsub("\n", " | ", IPTout$DetResourceDetailsDate0[which(grepl("\n", IPTout$DetResourceDetailsDate0)==TRUE)])
 IPTout$RightsAcknowledgeLocal[which(grepl("\n", IPTout$RightsAcknowledgeLocal)==TRUE)] <- gsub("\n", "  ", IPTout$RightsAcknowledgeLocal[which(grepl("\n", IPTout$RightsAcknowledgeLocal)==TRUE)])
+IPTout$AdmGUIDValue_tab[which(grepl("\n", IPTout$AdmGUIDValue_tab)==TRUE)] <- gsub("\n", " | ", IPTout$AdmGUIDValue_tab[which(grepl("\n", IPTout$AdmGUIDValue_tab)==TRUE)])
 
 # also strip quotes
 IPTout$AudRelatedGeography[which(grepl('"', IPTout$AudRelatedGeography)==TRUE)] <- gsub('"', "", IPTout$AudRelatedGeography[which(grepl('"', IPTout$AudRelatedGeography)==TRUE)])
