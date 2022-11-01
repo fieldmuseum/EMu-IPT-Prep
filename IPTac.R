@@ -109,7 +109,7 @@ CatMMGroup1 <- dplyr::select(CatMMGroup1, -SupMD5Checksum_tab)
 
 # Merge all data-frames
 IPTout <- merge(CatMMGroup1, MM4, by="Group1_key", all.x=T)
-IPTout <- merge(IPTout, RIG3, by="Group1_key", all.x=T)
+IPTout <- merge(IPTout, RIG4, by="Group1_key", all.x=T)
 IPTout <- merge(IPTout, SecDepar4, by="Group1_key", all.x=T)
 
 IPTout <- unique(IPTout)
