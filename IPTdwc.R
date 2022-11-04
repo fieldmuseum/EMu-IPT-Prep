@@ -54,7 +54,7 @@ if ('DarDateLastModified' %in% colnames(cat)) {
                                   cat$DarDateLastModified)
   
   # If need to strip seconds & milliseconds, uncomment next line & rerun:
-  cat$DarDateLastModified <- gsub("(T\\d+\\:\\d+)(\\:\\d{2}\\.\\d+)",
+  cat$DarDateLastModified <- gsub("(T\\d+\\:\\d+)(\\:\\d{1,2}\\.\\d+)",
                                   "\\1",
                                   cat$DarDateLastModified)
 
