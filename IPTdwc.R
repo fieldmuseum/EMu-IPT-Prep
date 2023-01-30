@@ -8,15 +8,9 @@ library("readr")
 
 if(!dir.exists("data01raw/iptSpec")) {
   
-  if(!dir.exists("data01output")) {
-    
-    dir.create("data01output")
-    
-  }
-  
-  dir.create("data01output")
-  print("Dear Human: I created a 'data01output/iptSpec' directory")
-  print("-- Please add 'ecatalog.csv' to the 'iptSpec' directory")
+  dir.create("data01raw/iptSpec", recursive = T)
+  print("A 'data01raw/iptSpec' directory was newly created")
+  print("-- Please add your 'ecatalog.csv' to the 'iptSpec' directory")
   
 }
 
