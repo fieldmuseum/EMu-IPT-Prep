@@ -27,36 +27,36 @@ cat <- read_csv("data01raw/iptSpec/ecatalog.csv",
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
 
-if (!'DarDateLasteModified' %in% colnames(cat)) {
+if (!'modified' %in% colnames(cat)) {
   
-  if ('modified' %in% colnames(cat)) {
-    cat$DarDateLastModified <- cat$modified
+  if ('DarDateLasteModified' %in% colnames(cat)) {
+    cat$modified <- cat$DarDateLastModified
   }
 }
 
-if ('DarDateLastModified' %in% colnames(cat)) {
+if ('modified' %in% colnames(cat)) {
   # if (NROW(cat$DarDateLastModified) > 0) {
  
   print('Converting dates...')
   # Add leading zero for month
-  cat$DarDateLastModified <- gsub("(^\\d{4}\\-)(\\d{1}\\-)",
+  cat$modified <- gsub("(^\\d{4}\\-)(\\d{1}\\-)",
                                   "\\10\\2", 
-                                  cat$DarDateLastModified)
+                                  cat$modified)
   
   # Add leading zero for day
-  cat$DarDateLastModified <- gsub("(^\\d+\\-\\d+\\-)(\\dT)",
+  cat$modified <- gsub("(^\\d+\\-\\d+\\-)(\\dT)",
                                   "\\10\\2", 
-                                  cat$DarDateLastModified)
+                                  cat$modified)
   
   # Change suffix from timezone to UTF-relative
-  cat$DarDateLastModified <- gsub("CMT$",
+  cat$modified <- gsub("CMT$",
                                   "-0600", 
-                                  cat$DarDateLastModified)
+                                  cat$modified)
   
   # If need to strip seconds & milliseconds, uncomment next line & rerun:
-  cat$DarDateLastModified <- gsub("(T\\d+\\:\\d+)(\\:\\d{1,2}\\.\\d+)",
+  cat$modified <- gsub("(T\\d+\\:\\d+)(\\:\\d{1,2}\\.\\d+)",
                                   "\\1",
-                                  cat$DarDateLastModified)
+                                  cat$modified)
 
 } else {
   
