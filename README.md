@@ -11,11 +11,11 @@ Information on how to structure data/reports from EMu is at the top of each scri
 ## IPTcd.R
   - prepares a [draft] [Collections Description](https://github.com/tdwg/cd) dataset for inventories, accessions, or other data not yet resolved to 'occurrence-level' specificity.
 
-## IPTdwc.R [DRAFT]
+## IPTdwc.R
   - includes checks to help prepare EMu Catalogue data as a [Darwin Core](https://github.com/tdwg/dwc/blob/master/docs/terms/index.md) dataset.
-
-## IPTdwc_dateModFix.R
-  - added 2022-jan to convert EMu's DarDateLastModified values to the proper ISO time format for dwc:modified.
+  - converts EMu's DarDateLastModified values to the proper ISO time format for dwc:modified.
+  - converts EMu's ColDateCollectedFrom (or DarYear, DarMonth, DayDay) to ISO format for dwc:eventDate.
+  - replaces carriage-returns with pipes within all fields.
 
 ## IPTrr.R
   - prepares EMu Catalogue data from the Relationship Tab (AllRelNhTab) as a [Resource Relationship](https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship) extension for occurrences with interactions.
@@ -50,7 +50,7 @@ In this repo:
 
   - For Audubon Core scripts, e.g. `IPTac.R`:
     - EMu Catalogue report = 'IPT Audubon Core' CSV report
-    - Location for all EMu csv's = `data01raw/`
+    - Location for all EMu csv's from this report: `data01raw/`
 
   - For Darwin Core scripts, e.g. `IPTdwc.R`:
     - run an EMu Catalogue 'IPT_General' CSV report (or IPT_[Collection Area])
@@ -66,7 +66,7 @@ In this repo:
 1. Open command line (cmd, terminal, etc), and check that R can run there by typing `Rscript` and hitting enter.
     - If a 'command not found' warning appears, add Rscript.exe's path (e.g. `C:\Program Files\R\R-4.1.2\bin`) to the Path environment variable 
     - [Steps to add a path are here](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/)
-2. `cd` to this root directory of this repo
+2. `cd` to the root directory of this repo
 3. Use `Rscript` to run a script in commandline -- e.g.: `Rscript IPTac.R`
     - Use `--verbose` to see more info while the script runs -- e.g.: `Rscript --verbose IPTac.R`
 4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
