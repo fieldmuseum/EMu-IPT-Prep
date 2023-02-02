@@ -5,6 +5,8 @@
 # 3 - run this IPTdwc.R script
 
 library("readr")
+library("tidyr")
+library("dplyr")
 
 if(!dir.exists("data01raw/iptSpec")) {
   
@@ -15,7 +17,10 @@ if(!dir.exists("data01raw/iptSpec")) {
 }
 
 #### Import CSVs ####
-cat <- read_csv("data01raw/iptSpec/ecatalog.csv",
+
+input_file <- "data01raw/iptSpec/ecatalog.csv"
+
+cat <- read_csv(input_file,
                 guess_max = 1000000)
 
 # # NOTE - make sure file encoding is properly imported
@@ -26,8 +31,8 @@ cat <- read_csv("data01raw/iptSpec/ecatalog.csv",
 
 # # Function to check & fix YYYY-MM-DD date fields to ISO date-format
 date_fixer <- function (df_to_fix=cat,
-                        column_to_fix="modified",
-                        backup_column="DarDateLastModified") {
+                        column_to_fix,
+                        backup_column) {
   
   if (nchar(backup_column) > 0) {
     if (!column_to_fix %in% colnames(df_to_fix)) {
@@ -50,7 +55,10 @@ date_fixer <- function (df_to_fix=cat,
   if (column_to_fix %in% colnames(df_to_fix)) {
     # if (NROW(cat$DarDateLastModified) > 0) {
     
-    print('Converting dates...')
+    print(paste0("Converting dates for '",
+                 column_to_fix,
+                 "' field..."))
+    
     # Add leading zero for month
     df_to_fix[[column_to_fix]] <- gsub("(^\\d{4}\\-)(\\d{1}\\-)",
                          "\\10\\2", 
@@ -92,7 +100,7 @@ piper <- function (x) {
 }
 
 
-#### Prep & Cleanup Data-fields ####
+#### Prep Data-fields ####
 
 
 # Prep ColDateVisitedFrom if it's missing
@@ -115,14 +123,67 @@ cat$ColDateVisitedFrom <- gsub('\\-\\-.*', '-', cat$ColDateVisitedFrom)
 cat$ColDateVisitedFrom <- gsub('\\-$', '', cat$ColDateVisitedFrom)
 
 
-# Setup ISO(ish) dates for the following fields
+#### Fix ISO dates ####
 cat$modified <- date_fixer(cat, "modified", "DarDateLastModified")
 cat$eventDate <- date_fixer(cat, "eventDate", "ColDateVisitedFrom")
 
 
-# Check/Replace carriage returns
+#### Fix carriage returns ####
 cat2 <- piper(cat)
 
+
+#### Flag duplicated GUIDs ####
+if (NROW(cat2) > 1000) {
+  
+  print(paste("Counting GUIDs in", NROW(cat2),
+              "rows -- May take a minute..."))
+}
+
+guid_check <- cat2
+
+# 
+if (!"occurrenceId" %in% colnames(guid_check)) {
+  # Map the 1st GUID column to occurrenceId if not already
+  guid_check$occurrenceId <- 
+    guid_check[[colnames(guid_check)[grepl("DarGlobalUniqueIdentifier", 
+                                colnames(guid_check))>0][1]]]
+}
+
+guids <- dplyr::count(guid_check, occurrenceId)
+
+guids_dups <- guids[guids$n > 1,]
+
+cat_dups <- merge(guid_check[,c("irn","occurrenceId")], guids_dups,
+                     by="occurrenceId",
+                     all.y = TRUE)
+
+if (NROW(cat_dups) > 0) {
+  cat_dups <- unique(cat_dups[,c("irn","occurrenceId","n")])
+  
+  # Also check duplicated irn's
+  #   (If a record in a reported dataset is edited while that report runs,
+  #   that record's irn may be duplicated in the output...)
+  re_check <- dplyr::count(cat_dups, occurrenceId)
+  re_check <- re_check[re_check$n > 1,]
+  cat_dups <- cat_dups[cat_dups$occurrenceId %in% re_check$occurrenceId,]
+
+}
+
+if (NROW(cat_dups) > 0) {
+  
+  output_filename <- "dwc_guid_dups.csv"
+  
+  print(c(paste("Outputting",NROW(re_check), "duplicate GUIDs in",
+                NROW(cat_dups),"records to: "),
+          output_filename))
+  
+  write_csv(cat_dups,
+            output_filename)
+} else {
+
+  print(paste("No duplicate GUIDS found in input CSV: ", input_file))
+  
+}
 
 #### Output ####
 
