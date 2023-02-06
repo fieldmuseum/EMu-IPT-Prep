@@ -16,6 +16,7 @@ Information on how to structure data/reports from EMu is at the top of each scri
   - converts EMu's DarDateLastModified values to the proper ISO time format for dwc:modified.
   - converts EMu's ColDateCollectedFrom (or DarYear, DarMonth, DayDay) to ISO format for dwc:eventDate.
   - replaces carriage-returns with pipes within all fields.
+  - checks for duplicate GUIDs and if any are found, outputs a CSV of duplicates to check.
 
 ## IPTrr.R
   - prepares EMu Catalogue data from the Relationship Tab (AllRelNhTab) as a [Resource Relationship](https://tools.gbif.org/dwca-validator/extension.do?id=dwc:ResourceRelationship) extension for occurrences with interactions.
