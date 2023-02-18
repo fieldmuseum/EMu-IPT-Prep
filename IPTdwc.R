@@ -105,19 +105,27 @@ piper <- function (x) {
 
 # Prep ColDateVisitedFrom if it's missing
 
-if (!'ColDateVisitedFrom' %in%  colnames(cat)) {
+if (!'ColDateVisitedFrom' %in% colnames(cat)) {
   
-  if (grepl("year|month|day", colnames(cat)) > 0) {
+  if (!NA %in% match("year|month|day", colnames(cat))) {
     cat$ColDateVisitedFrom <- paste0(cat$year,
                                      "-", cat$month,
                                      "-", cat$day)
   }
   else {
-    cat$ColDateVisitedFrom <- paste0(cat$DarYearCollected,
-                                     "-", cat$DarMonthCollected,
-                                     "-", cat$DarDayCollected)
+    if (!'eventDate' %in% colnames(cat)) {
+      cat$ColDateVisitedFrom <- paste0(cat$DarYearCollected,
+                                       "-", cat$DarMonthCollected,
+                                       "-", cat$DarDayCollected)
+    } 
+    else {
+      
+      cat$ColDateVisitedFrom <- cat$eventDate
+      
+    }
   }
 }
+
 
 cat$ColDateVisitedFrom <- gsub('\\-\\-.*', '-', cat$ColDateVisitedFrom)
 cat$ColDateVisitedFrom <- gsub('\\-$', '', cat$ColDateVisitedFrom)
@@ -141,7 +149,9 @@ if (NROW(cat2) > 1000) {
 
 guid_check <- cat2
 
-# 
+# Check/Fix "occurrenceId" capitalization
+colnames(guid_check)[colnames(guid_check)=="occurrenceID"] <- "occurrenceId"
+
 if (!"occurrenceId" %in% colnames(guid_check)) {
   # Map the 1st GUID column to occurrenceId if not already
   guid_check$occurrenceId <- 
