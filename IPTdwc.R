@@ -26,7 +26,6 @@ cat <- read_csv(input_file,
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
 
-
 #### Setup Cleanup Functions: ####
 
 # # Function to check & fix YYYY-MM-DD date fields to ISO date-format
@@ -92,6 +91,80 @@ date_fixer <- function (df_to_fix=cat,
   
 }
 
+
+# Function to fix hard-coded EMu DarBasisOfRecord
+
+basis_fixer <- function (df_to_fix=cat,
+                         column_to_fix,
+                         backup_column) {
+  
+  if (nchar(backup_column) > 0) {
+    if (!column_to_fix %in% colnames(df_to_fix)) {
+      
+      if (backup_column %in% colnames(df_to_fix)) {
+        df_to_fix[[column_to_fix]] <- df_to_fix[[backup_column]]
+      }
+      
+      else {
+        
+        print(paste("Warning - For basis_fixer(), input dataframe",
+                    df_to_fix, "missing 'column_to_fix'",
+                    column_to_fix, "or 'backup_column'", 
+                    backup_column))
+        
+      }
+    }
+  }
+  
+  if (column_to_fix %in% colnames(df_to_fix)) {
+    
+    # Align EMu DarBasisOfRecord-values to dwc:basisOfRecord
+    # http://rs.tdwg.org/dwc/dwctype.htm
+    print(paste0("Checking/Fixing dwc:basisOfRecord values in '",
+                 column_to_fix,
+                 "' field..."))
+    
+    # Remove spaces, if any
+    df_to_fix[[column_to_fix]] <- gsub("\\s+",
+                                       "", 
+                                       df_to_fix[[column_to_fix]])
+    
+    # Fix overly general terms
+    if (df_to_fix[[column_to_fix]][1] == "Specimen") { 
+      
+      if (!"collectionCode" %in% colnames(df_to_fix)) {
+        if (!"CatCatalog" %in% colnames(df_to_fix)) {
+          print(paste("Warning - For basis_fixer(), input dataframe",
+                      df_to_fix, 
+                      "missing 'collectionCode' or 'CatCatalog'. ",
+                      "Cannot fix dwc:basisOfRecord"))
+          return(df_to_fix[[column_to_fix]])
+        } else {
+          df_to_fix$collectionCode <- df_to_fix$CatCatalog
+        }
+      }
+        
+      if (grepl("Paleo|Fossil\\.*", df_to_fix$collectionCode[1]) > 0) {
+        df_to_fix[[column_to_fix]] <- "FossilSpecimen"
+      } else {
+        df_to_fix[[column_to_fix]] <- "PreservedSpecimen"
+      }
+    }
+    
+    return(df_to_fix[[column_to_fix]])
+    
+  } else {
+    
+    print(paste("Warning - For basis_fixer(), input dataframe",
+                df_to_fix, "missing 'column_to_fix'",
+                column_to_fix, "or 'backup_column'", 
+                backup_column))
+    
+  }
+  
+}
+
+
 # Function to check & replace carriage returns
 piper <- function (x) {
   x[1:NCOL(x)] <- sapply(x[1:NCOL(x)],
@@ -134,6 +207,10 @@ cat$ColDateVisitedFrom <- gsub('\\-$', '', cat$ColDateVisitedFrom)
 #### Fix ISO dates ####
 cat$modified <- date_fixer(cat, "modified", "DarDateLastModified")
 cat$eventDate <- date_fixer(cat, "eventDate", "ColDateVisitedFrom")
+
+
+#### Fix EMu values for dwc:basisOfRecord ####
+cat$basisOfRecord <- basis_fixer(cat, "basisOfRecord", "DarBasisOfRecord")
 
 
 #### Fix carriage returns ####
