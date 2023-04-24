@@ -1,11 +1,11 @@
-# EMu Data Prep Script -- to prep Audubon Core dataset including CT data
+# EMu Data Prep Script -- to prep Audiovisual Core dataset including CT data
 
 # [Stuff to update/fix in script:]
 # [May need to manually check lines 48 & 68 & fix # of united keyseq columns (if <> 3)]
 
 # STEP 1a: Retrieve dataset in EMu/ecatalogue 
 #          (e.g., for Fishes, find all Fishes catalogue records where Publish=OK & HasMM=Y)
-# STEP 1b: Report those records using "IPT Audubon Core - with Supp v2" report with these fields:
+# STEP 1b: Report those records using "IPT Audiovisual Core" report with these fields:
 #
 # [1] "Group1_key"                 "ecatalogue_key"              "CATirn"                   
 # [4] "DarGlobalUniqueIdentifier"  "AdmGUIDValue_tab"            "MulMimeType"              

@@ -286,7 +286,10 @@ csv_path <- "data02output/"
 print("Outputing prepped file here: data02output/Catalog2.csv")
 
 # Write out results
-write.table(cat2, 
-            file=paste0(csv_path, "Catalog2.csv"),
-            row.names = F, sep=",", na="", col.names = T, quote = TRUE)
+write_csv(cat2,
+          file=paste0(csv_path, "Catalog2.csv"))
+
+# write.table(cat2, 
+#             file=paste0(csv_path, "Catalog2.csv"),
+#             row.names = F, sep=",", na="", col.names = T, quote = TRUE)
 
