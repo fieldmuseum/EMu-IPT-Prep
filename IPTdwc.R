@@ -287,7 +287,8 @@ print("Outputing prepped file here: data02output/Catalog2.csv")
 
 # Write out results
 write_csv(cat2,
-          file=paste0(csv_path, "Catalog2.csv"))
+          file=paste0(csv_path, "Catalog2.csv"),
+          na="")
 
 # write.table(cat2, 
 #             file=paste0(csv_path, "Catalog2.csv"),
