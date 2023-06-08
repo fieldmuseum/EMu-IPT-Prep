@@ -209,8 +209,13 @@ cat$modified <- date_fixer(cat, "modified", "DarDateLastModified")
 cat$eventDate <- date_fixer(cat, "eventDate", "ColDateVisitedFrom")
 
 
-#### Fix EMu values for dwc:basisOfRecord ####
-cat$basisOfRecord <- basis_fixer(cat, "basisOfRecord", "DarBasisOfRecord")
+# #### Fix EMu values for dwc:basisOfRecord ####
+# cat$basisOfRecord <- basis_fixer(cat, "basisOfRecord", "DarBasisOfRecord")
+if ("DarBasisOfRecord" %in% colnames(cat)) {
+  if (!"basisOfRecord" %in% colnames(cat)) {
+    cat$basisOfRecord <- cat$DarBasisOfRecord
+  }
+}
 
 
 #### Fix carriage returns ####
