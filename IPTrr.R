@@ -110,11 +110,11 @@ if(!dir.exists("data02output/relation")) {
 }
 
 
-write.csv(relat_out, 
+write_csv(relat_out, 
           file = paste0("data02output/relation/relation_",
                         gsub("-|\\s+|:", "", Sys.time()),
                         ".csv"),
-          row.names = FALSE,
-          quote = TRUE,
+          # row.names = FALSE,
+          quote = "all",
           na = "")
 

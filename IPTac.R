@@ -255,11 +255,11 @@ if (!dir.exists("data02output")) {
 }
 
 # EXPORT
-IPTout3 <- as.data.frame(rbind(ColLabels2,IPTout3))
 IPTout4 <- unique(IPTout3)
-write.table(IPTout4, 
-            file=paste0("data02output/field_media_", dept,".csv"),
-            row.names = F, sep=",", na="", col.names = F, quote = TRUE)
+colnames(IPTout4) <- ColLabels2
+write_csv(IPTout4, 
+          file=paste0("data02output/field_media_", dept,".csv"),
+          na="", quote = "all")
 
 if(exists("GUIDcheck")) {
   
