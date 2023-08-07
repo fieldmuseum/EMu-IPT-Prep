@@ -36,7 +36,7 @@ dept <- 'collection'
 
 # install.packages("tidyr")  # uncomment if not already installed
 library("tidyr")
-
+library("readr")
 
 # point to your csv file(s)
 CatMMGroup1 <- read.csv(file="data01raw/Group1.csv", stringsAsFactors = F, fileEncoding = "utf8")
