@@ -20,8 +20,11 @@ if(!dir.exists("data01raw/iptSpec")) {
 
 input_file <- "data01raw/iptSpec/ecatalog.csv"
 
+input_encoding <- guess_encoding(input_file, n_max = 1000)
+
 cat <- read_csv(input_file,
-                guess_max = 1000000)
+                guess_max = 1000000,
+                locale = readr::locale(encoding = input_encoding$encoding[1]))
 
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
