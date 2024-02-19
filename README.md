@@ -5,7 +5,7 @@ These scripts are part of the FMNH workflow for publishing specimen data from EM
 Information on how to structure data/reports from EMu is at the top of each script.
 
 ## IPTac.R
-  - prepares EMu Catalogue and Multimedia data as an [Audubon Core](https://github.com/tdwg/ac/blob/master/docs/termlist.md) extension for multimedia associated with occurrences.
+  - prepares EMu Catalogue and Multimedia data as an [Audiovisual Core](https://github.com/tdwg/ac/blob/master/docs/termlist.md) extension for multimedia associated with occurrences.
   - IPTac_v1.R is an older version (pre-CT scan data) for preparing Multimedia with a simpler record structure
 
 ## IPTcd.R
