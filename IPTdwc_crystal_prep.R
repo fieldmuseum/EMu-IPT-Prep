@@ -2,16 +2,14 @@
 
 library('readr')
 
-# ext <- read_csv("C:/Users/kwebbink/Desktop/field_rr_insect/field_rr_insect.csv",
-#                guess_max = 100000)
-# core <- read_csv("C:/Users/kwebbink/Desktop/field_rr_insect/field_ipt_insect.zip",
-#                 guess_max = 1000000)
-#
-# ext_no_ipt <- ext[which(!ext$resourceID %in% core$DarGlobalUniqueIdentifier...36),]
-# 
-# ext_yes_ipt <- ext[which(ext$resourceID %in% core$DarGlobalUniqueIdentifier...36),]
+# Input filepaths for extension & core CSV files
+ext_input_file <- "data02output/field_media_mammal_obs.zip"
+core_input_file <- "data02output/field_ipt_mammal_obs_raw.zip"
 
-
+# Corresponding Output filepaths:
+ext_output_file <- "data02output/ext_check_ids.csv"
+core_output_file <- "data02output/field_ipt_mammal_obs.csv"
+  
 # Strip linebreaks
 
 # # Function to check & replace linebreaks
@@ -23,14 +21,12 @@ piper <- function (x) {
 
 
 # Check that all occIDs in extension are in core dataset
-ext <- read_csv("data02output/field_media_mammal_obs.zip",
+ext <- read_csv(ext_input_file,
                 guess_max = 100000)
 
-input_file <- "data02output/field_ipt_mammal_obs_raw.zip"
+input_encoding <- guess_encoding(core_input_file, n_max = 1000000)
 
-input_encoding <- guess_encoding(input_file, n_max = 1000000)
-
-core <- read_csv(input_file,
+core <- read_csv(core_input_file,
                 guess_max = 1000000,
                 locale = readr::locale(encoding = input_encoding$encoding[1]))
 
@@ -64,24 +60,14 @@ core_2 <- piper(core)
 
 # Output only the Extension records with id's in Core dataset 
 write.csv(ext_yes_ipt, 
-          file = paste0("data02output/ext_check_ids.csv"),
+          file = ext_output_file, 
           row.names = FALSE,
           quote = TRUE,
           na = "")
 
 # Output cleaned DwC dataset
 write.csv(core_2, 
-          file = "data02output/field_ipt_mammal_obs.csv",
+          file = core_output_file,
           row.names = FALSE,
           quote = TRUE,
           na = "")
-
-# # # #
-# 
-# mm_dates <- read_csv("C:/Users/kwebbink/Desktop/mm_date_created/Group1.csv")
-# 
-# mm_dates$file <- paste0(mm_dates$AudIdentifier,
-#                         gsub("(.+)(\\.+)","\\2",mm_dates$MulIdentifier))
-# mm_dates_2 <- mm_dates[which(mm_dates$DetResourceDetailsDescription=="Created"),]
-# 
-# mm_dates_out <- mm_dates[,c("AudIdentifier",)]
