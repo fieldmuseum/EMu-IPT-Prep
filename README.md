@@ -91,10 +91,12 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
 
 # A note on warning messages
 ## `One or more parsing issues, see problems() for details`
+
 - try using guess max like this `cat <- read_csv(file = "data01raw/iptSpec/ecatalog.csv", guess_max = 1000000)`
   - Basically "guess_max" tells R to look at more rows before guessing which data-types to assign to columns... we could get more strict about schemas, but for now should be good.
 
-## `Error: package or namespace load failed for ‘readr’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]): there is no package called ‘hms’
+## Installing packages
+`Error: package or namespace load failed for ‘readr’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]): there is no package called ‘hms’
 In addition: Warning message:
 package ‘readr’ was built under R version 3.5.3`
 
