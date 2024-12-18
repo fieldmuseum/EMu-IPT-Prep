@@ -187,8 +187,8 @@ IPTout2$metadataLanguageLiteral <- "eng"
 
 
 # Rights & Credit
-IPTout2$WebStatement <- "https://www.fieldmuseum.org/field-museum-natural-history-conditions-and-suggested-norms-use-collections"
-IPTout2$AudCitation[which(is.na(IPTout2$AudCitation)==TRUE)] <- "https://www.fieldmuseum.org/preferred-citations-collections-data-and-images"
+IPTout2$WebStatement <- "https://dams.fieldmuseum.tech/portals/museum-media/#page/use-and-licensing"
+IPTout2$AudCitation[which(is.na(IPTout2$AudCitation)==TRUE)] <- "https://dams.fieldmuseum.tech/portals/museum-media/#page/preferred-citations"
 
 
 # Add IDofContainingCollection
