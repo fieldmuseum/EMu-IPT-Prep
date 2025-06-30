@@ -213,11 +213,16 @@ cat$eventDate <- date_fixer(cat, "eventDate", "ColDateVisitedFrom")
 
 
 # #### Fix EMu values for dwc:basisOfRecord ####
-# cat$basisOfRecord <- basis_fixer(cat, "basisOfRecord", "DarBasisOfRecord")
-if ("DarBasisOfRecord" %in% colnames(cat)) {
-  if (!"basisOfRecord" %in% colnames(cat)) {
-    cat$basisOfRecord <- cat$DarBasisOfRecord
-  }
+# - Default to 'Preserved Specimen'
+#   with conditions for 'Material Sample' or 'Fossil Specimen'
+cat$basisOfRecord <- "Preserved Specimen"
+
+if ("CatCatalogSubset" %in% colnames(cat)) {
+  cat$basisOfRecord[cat$CatCatalogSubset == "Tissue"] <- "Material Sample"
+}
+
+if (grepl("Fossil|Paleo", cat$collectionCode) > 0) {
+  cat$basisOfRecord <- "Fossil Specimen"
 }
 
 
