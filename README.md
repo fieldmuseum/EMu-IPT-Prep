@@ -39,7 +39,8 @@ EMu-IPT-Prep scripts primarily use tidyverse's `tidyr` and `readr` packages. For
 
 Or:
 1. Simply download the [EMu-IPT-prep](https://github.com/fieldmuseum/EMu-IPT-Prep) repo as a .zip, and unzip it
-2. Open RStudio, and create a new project by going to File --> New Project --> Existing Directory (select the 'EMu-IPT-prep' directory), and clicking 'Create Project'
+2. ato download a new zip, go to https://github.com/fieldmuseum/EMu-IPT-Prep ... & green button > download zip
+3. Open RStudio, and create a new project by going to File --> New Project --> Existing Directory (select the 'EMu-IPT-prep' directory), and clicking 'Create Project'
 
 ## 3. Get Data from EMu
 The input files for the EMu-IPT-prep scripts are CSV datasets generated from EMu reports.
