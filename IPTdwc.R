@@ -221,7 +221,7 @@ if ("CatCatalogSubset" %in% colnames(cat)) {
   cat$basisOfRecord[cat$CatCatalogSubset == "Tissue"] <- "Material Sample"
 }
 
-if (grepl("Fossil|Paleo", cat$collectionCode) > 0) {
+if (TRUE %in% grepl("Fossil|Paleo", cat$collectionCode)) {
   cat$basisOfRecord <- "Fossil Specimen"
 }
 
