@@ -1,7 +1,7 @@
 # Clean CSVs for DwC
 
 # 1 - run the appropriate specimen "IPT" report from EMu
-# 2 - add the output 'ecatalog.csv' to this repo's data01raw/iptSpec/ directory
+# 2 - add the output 'ecatalog.csv' or 'Group1.csv' to this repo's data01raw/iptSpec/ directory
 # 3 - run this IPTdwc.R script
 
 library("readr")
@@ -18,7 +18,29 @@ if(!dir.exists("data01raw/iptSpec")) {
 
 #### Import CSVs ####
 
-input_file <- "data01raw/iptSpec/ecatalog.csv"
+if(file.exists("data01raw/iptSpec/ecatalog.csv")) {
+  
+  input_file <- "data01raw/iptSpec/ecatalog.csv"
+  
+  print("-- Imported ecatalog.csv as main DwC dataset")
+  
+} else {
+  
+  if(file.exists("data01raw/iptSpec/Group1.csv")) {
+    
+    input_file <- "data01raw/iptSpec/Group1.csv"
+    
+    print("-- NO ecatalog.csv found.")
+    print("INSTEAD: imported Group1.csv (& dropped column 1 'Group1_key') as main DwV dataset.")
+    input_file <- input_file[,2:NCOL(input_file)]
+    
+  }
+  
+} else {
+  
+  print("NO INPUT FILE FOUND")
+  
+}
 
 input_encoding <- guess_encoding(input_file, n_max = 1000)
 
