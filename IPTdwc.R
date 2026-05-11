@@ -18,35 +18,41 @@ if(!dir.exists("data01raw/iptSpec")) {
 
 #### Import CSVs ####
 
-if(file.exists("data01raw/iptSpec/ecatalog.csv")) {
+if(file.exists("data01raw/iptSpec/Group1.csv")) {
   
-  input_file <- "data01raw/iptSpec/ecatalog.csv"
+  input_file <- "data01raw/iptSpec/Group1.csv"
   
-  print("-- Imported ecatalog.csv as main DwC dataset")
+  print("-- Group.csv found.")
+  print("Imported Group1.csv (& dropped column 1 'Group1_key') as main DwC dataset.")
   
-} else {
+  input_encoding <- guess_encoding(input_file, n_max = 1000)
   
-  if(file.exists("data01raw/iptSpec/Group1.csv")) {
-    
-    input_file <- "data01raw/iptSpec/Group1.csv"
-    
-    print("-- NO ecatalog.csv found.")
-    print("INSTEAD: imported Group1.csv (& dropped column 1 'Group1_key') as main DwV dataset.")
-    input_file <- input_file[,2:NCOL(input_file)]
-    
-  }
+  cat_orig <- read_csv(input_file,
+                  guess_max = 1000000,
+                  locale = readr::locale(encoding = input_encoding$encoding[1]))
+  
+  cat_orig <- cat_orig[,2:NCOL(cat_orig)]
   
 } else {
+  
+  if(file.exists("data01raw/iptSpec/ecatalog.csv")) {
+    
+    input_file <- "data01raw/iptSpec/ecatalog.csv"
+    
+    input_encoding <- guess_encoding(input_file, n_max = 1000)
+    
+    cat_orig <- read_csv(input_file,
+                    guess_max = 1000000,
+                    locale = readr::locale(encoding = input_encoding$encoding[1]))
+    
+    print("-- Imported ecatalog.csv as main DwC dataset")
+    
+  } else {
   
   print("NO INPUT FILE FOUND")
   
+  }
 }
-
-input_encoding <- guess_encoding(input_file, n_max = 1000)
-
-cat <- read_csv(input_file,
-                guess_max = 1000000,
-                locale = readr::locale(encoding = input_encoding$encoding[1]))
 
 # # NOTE - make sure file encoding is properly imported
 # # IF grepl("Ã", cat[1:NCOL(cat)]) > 0 ), REIMPORT
@@ -200,6 +206,34 @@ piper <- function (x) {
 
 #### Prep Data-fields ####
 
+# * Remove duplicate rows for Events ####
+# 1 - split irn+eventId from general table
+event_cols <- c("eventID",
+                "event_AdmGUIDType_tab", 
+                "event_AdmGUIDIsPreferred_tab",
+                "EveTypeOfEvent")
+events <- unique(cat_orig[,c("irn", event_cols)])
+
+# 2 - filter out non-research
+events <- events[grepl("Research", events$EveTypeOfEvent),]
+
+# 3 - spread eventId
+events$seq <- sequence(rle(events$irn)$length)
+events <- pivot_wider(events[,c("irn", "eventID", "seq")],
+                      id_cols = "irn",
+                      names_from = "seq",
+                      values_from = "eventID")
+
+events <- unite(events, col = "eventID", 
+                2:NCOL(events), sep = " | ",
+                remove = TRUE)
+
+# 4 - merge spread-event back to deduped general table
+cat_cols <- colnames(cat_orig)[!colnames(cat_orig) %in% event_cols]
+cat <- merge(unique(cat_orig[,cat_cols]),
+             events,
+             by = "irn",
+             all.x = TRUE)
 
 # Prep ColDateVisitedFrom if it's missing
 
