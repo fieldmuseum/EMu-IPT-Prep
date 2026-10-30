@@ -85,10 +85,12 @@ When running `source`, setting `verbose=TRUE` can be useful if warnings or error
     
     `source("IPTdwc.R", verbose=TRUE)` # For Darwin Core
 
-3. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
-4. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
-5. Rename the output file `Catalog2.csv` to the corresponding collection e.g. field_ipt_insects
-6. zip the file
+UPDATE 2026: For the Darwin core processing the input filename is `Group1.csv` (original filename: ecatalog.csv)
+
+4. While the script is running, a small red 'stop sign' icon will display in the Console pane's upper-right corner. When the script is finished, the stop sign will disappear.
+5. When the script finishes, check for the output file/s in the `data02output` directory in this repo.
+6. Rename the output file `Catalog2.csv` to the corresponding collection e.g. field_ipt_insects
+7. zip the file
 
 # A note on warning messages
 ## `One or more parsing issues, see problems() for details`
